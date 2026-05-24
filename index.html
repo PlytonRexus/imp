@@ -1,0 +1,340 @@
+
+<h2 class="sr-only">Timeline of British conquest of India, 1757 to 1886, showing major battles, treaties, and annexations grouped by region.</h2>
+
+<style>
+  .tl-wrap { padding: 1.5rem 0 2rem; font-family: var(--font-sans); }
+  .tl-legend { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .tl-legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--color-text-secondary); }
+  .tl-dot-lg { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+  .tl-dot-sm { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .era-label { font-size: 11px; font-weight: 500; letter-spacing: 0.06em; color: var(--color-text-tertiary); text-transform: uppercase; margin-bottom: 4px; }
+  .tl-svg-wrap { width: 100%; overflow-x: auto; }
+  .event-card { position: absolute; background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 7px 10px; pointer-events: none; max-width: 200px; display: none; z-index: 10; box-shadow: none; }
+  .event-card.visible { display: block; }
+  .event-card-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 3px; }
+  .event-card-body { font-size: 11px; color: var(--color-text-secondary); line-height: 1.5; }
+  .event-card-tag { display: inline-block; font-size: 10px; padding: 2px 7px; border-radius: 4px; margin-bottom: 5px; }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1rem; }
+  .filter-btn { font-size: 11px; padding: 4px 12px; border-radius: 20px; border: 0.5px solid var(--color-border-secondary); background: transparent; cursor: pointer; color: var(--color-text-secondary); transition: background 0.15s; }
+  .filter-btn:hover { background: var(--color-background-secondary); }
+  .filter-btn.active { background: var(--color-background-secondary); border-color: var(--color-border-primary); color: var(--color-text-primary); }
+  .hover-label { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 0.75rem; }
+</style>
+
+<div class="tl-wrap">
+
+  <div class="tl-legend">
+    <div class="tl-legend-item"><div class="tl-dot-lg" style="background:#378ADD;"></div>Bengal & East India</div>
+    <div class="tl-legend-item"><div class="tl-dot-lg" style="background:#D85A30;"></div>Mysore & South</div>
+    <div class="tl-legend-item"><div class="tl-dot-lg" style="background:#3B6D11;"></div>Marathas & Central India</div>
+    <div class="tl-legend-item"><div class="tl-dot-lg" style="background:#BA7517;"></div>Punjab & Sikhs</div>
+    <div class="tl-legend-item"><div class="tl-dot-lg" style="background:#7F77DD;"></div>Frontier (Nepal · Burma · Sindh · Afghanistan)</div>
+    <div class="tl-legend-item"><div class="tl-dot-lg" style="background:#D4537E;"></div>Doctrine of Lapse / Annexation</div>
+    <div class="tl-legend-item" style="margin-left:8px; border-left: 0.5px solid var(--color-border-tertiary); padding-left:12px;">
+      <div class="tl-dot-lg" style="background:#E24B4A;"></div>Major defeat / British setback
+    </div>
+    <div class="tl-legend-item"><div style="width:11px;height:2px;background:#888780;flex-shrink:0;"></div>War / conflict span</div>
+  </div>
+
+  <div class="filters">
+    <button class="filter-btn active" data-filter="all">All events</button>
+    <button class="filter-btn" data-filter="bengal">Bengal & East</button>
+    <button class="filter-btn" data-filter="mysore">Mysore & South</button>
+    <button class="filter-btn" data-filter="maratha">Marathas</button>
+    <button class="filter-btn" data-filter="punjab">Punjab & Sikhs</button>
+    <button class="filter-btn" data-filter="frontier">Frontier states</button>
+    <button class="filter-btn" data-filter="annexation">Annexations</button>
+    <button class="filter-btn" data-filter="defeat">British setbacks</button>
+  </div>
+
+  <div class="hover-label">Hover over any event to see details</div>
+
+  <div style="position: relative;">
+    <canvas id="tlCanvas" role="img" aria-label="Timeline of British conquest of India 1757 to 1886"></canvas>
+    <div class="event-card" id="eventCard">
+      <div class="event-card-tag" id="cardTag"></div>
+      <div class="event-card-title" id="cardTitle"></div>
+      <div class="event-card-body" id="cardBody"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const EVENTS = [
+  { year:1757, label:"Battle of Plassey", short:"Plassey", cat:"bengal", color:"#378ADD", type:"battle", detail:"Clive defeats Siraj-ud-Daulah. Mir Jafar's treachery decides the day. Britain wins Bengal's revenues.", row:0 },
+  { year:1760, label:"Battle of Wandiwash", short:"Wandiwash", cat:"mysore", color:"#D85A30", type:"battle", detail:"Decisive defeat of the French in South India. French colonial ambitions end permanently.", row:1 },
+  { year:1763, label:"Treaty of Paris", short:"Paris 1763", cat:"mysore", color:"#D85A30", type:"treaty", detail:"French lose all political rights in India. British supremacy in the south secured.", row:2 },
+  { year:1764, label:"Battle of Buxar", short:"Buxar", cat:"bengal", color:"#378ADD", type:"battle", detail:"British defeat Nawab of Bengal + Awadh Nawab + Mughal Emperor. The real foundation of British India.", row:0 },
+  { year:1765, label:"Diwani Grant", short:"Diwani", cat:"bengal", color:"#378ADD", type:"treaty", detail:"Mughal emperor grants revenue rights over Bengal-Bihar-Orissa. India pays for its own conquest.", row:1 },
+  { year:1769, label:"Treaty of Madras", short:"Madras Treaty", cat:"mysore", color:"#E24B4A", type:"defeat", detail:"1st Anglo-Mysore War ends. Hyder Ali forces British to sign humiliating treaty — British setback.", row:2 },
+  { year:1775, label:"1st Anglo-Maratha War", short:"1st Maratha War", cat:"maratha", color:"#888780", type:"war", span:7, detail:"British backed Raghoba against the Peshwa. Wadgaon Convention (1779) — British surrendered. Treaty of Salbai (1782): status quo restored.", row:3 },
+  { year:1779, label:"Convention of Wadgaon", short:"Wadgaon", cat:"maratha", color:"#E24B4A", type:"defeat", detail:"British forces under Cockburn surrender to Mahadaji Scindia. One of few British capitulations.", row:4 },
+  { year:1780, label:"2nd Anglo-Mysore War", short:"2nd Mysore War", cat:"mysore", color:"#888780", type:"war", span:4, detail:"Hyder Ali devastates Carnatic. Battle of Pollilur: British brigade destroyed. Tipu Sultan takes over 1782.", row:1 },
+  { year:1782, label:"Battle of Pollilur", short:"Pollilur", cat:"mysore", color:"#E24B4A", type:"defeat", detail:"Col. Baillie's detachment of ~3,800 virtually destroyed by Hyder Ali/Tipu. One of worst British defeats.", row:2 },
+  { year:1784, label:"Treaty of Mangalore", short:"Mangalore", cat:"mysore", color:"#E24B4A", type:"defeat", detail:"Tipu Sultan signs on near-equal terms. Mutual restitution. British failed to defeat Mysore decisively.", row:0 },
+  { year:1790, label:"3rd Anglo-Mysore War", short:"3rd Mysore War", cat:"mysore", color:"#888780", type:"war", span:2, detail:"British + Nizam + Marathas vs Tipu. Tipu forced to surrender half his territory and pay ₹3.3 crore.", row:1 },
+  { year:1792, label:"Treaty of Seringapatam", short:"Seringapatam 1792", cat:"mysore", color:"#D85A30", type:"treaty", detail:"Tipu cedes half his territory. Gives his two sons as hostages. A profound humiliation for Mysore.", row:2 },
+  { year:1798, label:"Hyderabad joins Alliance", short:"Hyderabad Alliance", cat:"mysore", color:"#D4537E", type:"annexation", detail:"First major state to accept Subsidiary Alliance. Annual subsidy; British force stationed. A debt trap.", row:3 },
+  { year:1799, label:"Fall of Seringapatam", short:"Seringapatam falls", cat:"mysore", color:"#D85A30", type:"battle", detail:"Tipu Sultan killed defending his capital. Wellesley's first great victory. French threat in south ends.", row:0 },
+  { year:1801, label:"Awadh Subsidiary Alliance", short:"Awadh Alliance", cat:"annexation", color:"#D4537E", type:"annexation", detail:"Awadh cedes half its territory (Doab, Rohilkhand). Revenue halved. Path to 1856 annexation begins.", row:1 },
+  { year:1802, label:"Treaty of Bassein", short:"Bassein", cat:"maratha", color:"#3B6D11", type:"treaty", detail:"Peshwa Baji Rao II accepts Subsidiary Alliance. Brings British troops into Pune. Other chiefs declare war.", row:2 },
+  { year:1803, label:"2nd Anglo-Maratha War", short:"2nd Maratha War", cat:"maratha", color:"#888780", type:"war", span:2, detail:"Wellesley defeats Scindia & Bhonsle. Delhi and Agra captured. Mughal Emperor under British protection.", row:3 },
+  { year:1803, label:"Battle of Assaye", short:"Assaye", cat:"maratha", color:"#3B6D11", type:"battle", detail:"7,000 British vs 50,000 Marathas. British win but 21% casualties. Wellington's 'finest action'.", row:4 },
+  { year:1803, label:"Delhi & Agra captured", short:"Delhi/Agra", cat:"maratha", color:"#3B6D11", type:"battle", detail:"Lord Lake takes Delhi and Agra from Scindia. Mughal Emperor Shah Alam II under British 'protection'.", row:5 },
+  { year:1805, label:"Siege of Bharatpur fails", short:"Bharatpur fails", cat:"frontier", color:"#E24B4A", type:"defeat", detail:"Lord Lake fails four assaults on the Jat fort. ~3,000 casualties. One of few British military failures.", row:0 },
+  { year:1814, label:"Anglo-Nepalese War", short:"Nepal War", cat:"frontier", color:"#888780", type:"war", span:2, detail:"Gurkhas repulse three British columns initially. Eventually treaty signed after Ochterlony's campaign.", row:1 },
+  { year:1815, label:"Battle of Kalunga", short:"Kalunga", cat:"frontier", color:"#E24B4A", type:"defeat", detail:"600 Gurkhas under Balbhadra Kunwar hold fort against 3,500 British for a month. Gen. Gillespie killed.", row:2 },
+  { year:1816, label:"Treaty of Sugauli", short:"Sugauli", cat:"frontier", color:"#7F77DD", type:"treaty", detail:"Nepal cedes Kumaon, Garhwal, Terai strip. Retains independence. Gurkha soldiers begin to be recruited.", row:3 },
+  { year:1817, label:"3rd Anglo-Maratha War", short:"3rd Maratha War", cat:"maratha", color:"#888780", type:"war", span:2, detail:"Battles of Kirkee, Sitabuldi, Mahidpur. Peshwa deposed. Maratha power ended permanently.", row:4 },
+  { year:1819, label:"Peshwa deposed", short:"Peshwa deposed", cat:"maratha", color:"#3B6D11", type:"treaty", detail:"Baji Rao II pensioned to Bithur. His adopted son Nana Sahib denied pension — a 1857 trigger.", row:5 },
+  { year:1824, label:"1st Anglo-Burmese War", short:"1st Burma War", cat:"frontier", color:"#888780", type:"war", span:2, detail:"~15,000 died of disease. Burmese initially hold Rangoon's hinterland. Treaty of Yandabo (1826).", row:0 },
+  { year:1826, label:"Treaty of Yandabo", short:"Yandabo", cat:"frontier", color:"#7F77DD", type:"treaty", detail:"Burma cedes Arakan & Tenasserim. Pays ₹1 crore indemnity. War cost Britain ~£13 million.", row:1 },
+  { year:1839, label:"1st Anglo-Afghan War", short:"1st Afghan War", cat:"frontier", color:"#888780", type:"war", span:3, detail:"Britain installs Shah Shuja. Occupation quickly becomes untenable. Kabul uprising November 1841.", row:2 },
+  { year:1841, label:"Massacre at Kabul", short:"Kabul massacre", cat:"frontier", color:"#E24B4A", type:"defeat", detail:"British Envoy Macnaghten murdered. Garrison of 16,000 begins retreat. Only Dr. Brydon reaches Jalalabad.", row:3 },
+  { year:1842, label:"Retreat from Kabul", short:"Retreat from Kabul", cat:"frontier", color:"#E24B4A", type:"defeat", detail:"Britain's greatest Asian disaster. 16,000 entered the Khyber passes. One man arrived at Jalalabad.", row:4 },
+  { year:1843, label:"Conquest of Sindh", short:"Sindh annexed", cat:"frontier", color:"#D4537E", type:"annexation", detail:"Napier defeats Amirs at Miani. Private diary: 'No right to seize Sindh; yet we shall do so.' Karachi port gained.", row:0 },
+  { year:1845, label:"1st Anglo-Sikh War", short:"1st Sikh War", cat:"punjab", color:"#888780", type:"war", span:1, detail:"Dal Khalsa crosses Sutlej. Hard fighting at Ferozeshah. Treachery within Sikh command costs victory.", row:1 },
+  { year:1846, label:"Treaty of Lahore", short:"Lahore Treaty", cat:"punjab", color:"#BA7517", type:"treaty", detail:"Kashmir sold to Gulab Singh for ₹75 lakh. Punjab army reduced. British Resident in Lahore.", row:2 },
+  { year:1848, label:"2nd Anglo-Sikh War", short:"2nd Sikh War", cat:"punjab", color:"#888780", type:"war", span:1, detail:"Battle of Chilianwala: 2,446 British casualties — bloodiest engagement. Gujarat: artillery wins the day.", row:3 },
+  { year:1848, label:"Battle of Chilianwala", short:"Chilianwala", cat:"punjab", color:"#E24B4A", type:"defeat", detail:"British casualties 2,446 in a single day. The Khalsa Army nearly won. Public outrage in Britain.", row:4 },
+  { year:1849, label:"Punjab annexed", short:"Punjab annexed", cat:"punjab", color:"#BA7517", type:"annexation", detail:"Duleep Singh (age 11) deposed. Koh-i-Noor taken to Queen Victoria. NW frontier now British.", row:5 },
+  { year:1852, label:"2nd Anglo-Burmese War", short:"2nd Burma War", cat:"frontier", color:"#D4537E", type:"annexation", detail:"Dalhousie's manufactured pretext. Lower Burma (Pegu) annexed. Teak forests and Rangoon port gained.", row:0 },
+  { year:1853, label:"Nagpur annexed", short:"Nagpur (Lapse)", cat:"annexation", color:"#D4537E", type:"annexation", detail:"Doctrine of Lapse applied to the Bhonsle line. Largest Lapse annexation. Maratha heartland absorbed.", row:1 },
+  { year:1856, label:"Awadh annexed", short:"Awadh (1856)", cat:"annexation", color:"#D4537E", type:"annexation", detail:"Wajid Ali Shah deported. Misgovernance pretext. This annexation directly triggers the 1857 revolt.", row:2 },
+  { year:1857, label:"Great Revolt / 1857", short:"1857 Revolt", cat:"defeat", color:"#E24B4A", type:"defeat", detail:"Largest anti-colonial uprising before independence. Delhi, Lucknow, Kanpur, Jhansi, Bareilly centres.", row:3 },
+  { year:1878, label:"2nd Anglo-Afghan War", short:"2nd Afghan War", cat:"frontier", color:"#888780", type:"war", span:2, detail:"Treaty of Gandamak: Afghanistan a British protectorate. But Resident massacred. Battle of Maiwand.", row:0 },
+  { year:1880, label:"Battle of Maiwand", short:"Maiwand", cat:"frontier", color:"#E24B4A", type:"defeat", detail:"Ayub Khan destroys a British brigade. ~970 killed, ~1,000 wounded. Inspired Watson's wound in Sherlock Holmes.", row:1 },
+  { year:1885, label:"3rd Anglo-Burmese War", short:"3rd Burma War", cat:"frontier", color:"#D4537E", type:"annexation", detail:"King Thibaw deported to Ratnagiri. All Burma annexed as province of British India in 2 weeks.", row:2 },
+  { year:1886, label:"Burma = province of India", short:"Burma province", cat:"frontier", color:"#7F77DD", type:"treaty", detail:"Formal administrative merger. But guerrilla resistance lasts 5 years. 20,000 troops for 'pacification'.", row:3 },
+];
+
+const YEARS = { min: 1755, max: 1890 };
+const ROWS = 6;
+const ROW_H = 38;
+const PAD_LEFT = 52;
+const PAD_RIGHT = 30;
+const ERA_H = 28;
+const AXIS_H = 32;
+const HEADER_H = ERA_H + AXIS_H;
+const TOTAL_H = HEADER_H + ROWS * ROW_H + 20;
+
+const ERAS = [
+  { start:1757, end:1800, label:"Bengal & South (1757–1800)", color:"#E6F1FB" },
+  { start:1800, end:1820, label:"Wellesley era (1800–1820)", color:"#EAF3DE" },
+  { start:1820, end:1858, label:"Consolidation (1820–1858)", color:"#FAEEDA" },
+  { start:1858, end:1890, label:"Crown rule & frontiers (1858–1890)", color:"#FAECE7" },
+];
+
+const TYPE_LABELS = {
+  battle:"Battle", treaty:"Treaty / agreement", annexation:"Annexation",
+  defeat:"British setback", war:"War / conflict"
+};
+const TAG_COLORS = {
+  battle:{ bg:"#E6F1FB", text:"#0C447C" },
+  treaty:{ bg:"#EAF3DE", text:"#27500A" },
+  annexation:{ bg:"#FBEAF0", text:"#72243E" },
+  defeat:{ bg:"#FCEBEB", text:"#791F1F" },
+  war:{ bg:"#F1EFE8", text:"#444441" },
+};
+
+const canvas = document.getElementById('tlCanvas');
+const ctx = canvas.getContext('2d');
+const card = document.getElementById('eventCard');
+const cardTitle = document.getElementById('cardTitle');
+const cardBody = document.getElementById('cardBody');
+const cardTag = document.getElementById('cardTag');
+
+let W = 0;
+let activeFilter = "all";
+let hitTargets = [];
+
+function yearToX(y) {
+  return PAD_LEFT + (y - YEARS.min) / (YEARS.max - YEARS.min) * (W - PAD_LEFT - PAD_RIGHT);
+}
+function rowToY(r) {
+  return HEADER_H + r * ROW_H + ROW_H * 0.5;
+}
+
+function getFilteredEvents() {
+  if (activeFilter === "all") return EVENTS;
+  if (activeFilter === "defeat") return EVENTS.filter(e => e.type === "defeat");
+  if (activeFilter === "annexation") return EVENTS.filter(e => e.type === "annexation");
+  return EVENTS.filter(e => e.cat === activeFilter);
+}
+
+function isDarkMode() {
+  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+}
+
+function draw() {
+  const dark = isDarkMode();
+  const textPrimary = dark ? "#e8e6e1" : "#1a1916";
+  const textSecondary = dark ? "#9e9c96" : "#6b6964";
+  const textTertiary = dark ? "#6b6964" : "#9e9c96";
+  const borderColor = dark ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.12)";
+  const bgPrimary = dark ? "#1a1916" : "#ffffff";
+
+  ctx.clearRect(0, 0, W, TOTAL_H);
+
+  // era bands
+  ERAS.forEach(era => {
+    const x1 = yearToX(era.start);
+    const x2 = yearToX(era.end);
+    ctx.fillStyle = dark ? "rgba(255,255,255,0.03)" : era.color + "88";
+    ctx.fillRect(x1, 0, x2 - x1, TOTAL_H);
+    ctx.fillStyle = dark ? "rgba(255,255,255,0.25)" : era.color;
+    ctx.fillRect(x1, 0, x2 - x1, ERA_H);
+    ctx.fillStyle = dark ? textTertiary : "#555";
+    ctx.font = "10px var(--font-sans, sans-serif)";
+    ctx.textAlign = "center";
+    ctx.fillText(era.label, (x1 + x2) / 2, ERA_H * 0.65);
+  });
+
+  // era separators
+  ERAS.forEach(era => {
+    const x = yearToX(era.start);
+    ctx.strokeStyle = borderColor;
+    ctx.lineWidth = 0.5;
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, TOTAL_H); ctx.stroke();
+  });
+
+  // axis line
+  const axisY = ERA_H + AXIS_H - 8;
+  ctx.strokeStyle = borderColor;
+  ctx.lineWidth = 0.5;
+  ctx.beginPath(); ctx.moveTo(PAD_LEFT, axisY); ctx.lineTo(W - PAD_RIGHT, axisY); ctx.stroke();
+
+  // decade ticks
+  const startDecade = Math.ceil(YEARS.min / 10) * 10;
+  for (let y = startDecade; y <= YEARS.max; y += 10) {
+    const x = yearToX(y);
+    ctx.strokeStyle = borderColor;
+    ctx.lineWidth = y % 50 === 0 ? 1 : 0.5;
+    ctx.beginPath(); ctx.moveTo(x, axisY - 3); ctx.lineTo(x, axisY + 3); ctx.stroke();
+    ctx.fillStyle = textTertiary;
+    ctx.font = y % 50 === 0 ? "500 11px var(--font-sans, sans-serif)" : "10px var(--font-sans, sans-serif)";
+    ctx.textAlign = "center";
+    ctx.fillText(y, x, axisY + 14);
+  }
+
+  // row grid lines
+  for (let r = 0; r < ROWS; r++) {
+    const y = rowToY(r);
+    ctx.strokeStyle = dark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)";
+    ctx.lineWidth = 0.5;
+    ctx.setLineDash([3, 4]);
+    ctx.beginPath(); ctx.moveTo(PAD_LEFT, y); ctx.lineTo(W - PAD_RIGHT, y); ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  hitTargets = [];
+  const filtered = getFilteredEvents();
+
+  // draw war spans first (behind dots)
+  filtered.filter(e => e.type === "war" && e.span).forEach(e => {
+    const x1 = yearToX(e.year);
+    const x2 = yearToX(e.year + e.span);
+    const y = rowToY(e.row);
+    ctx.strokeStyle = dark ? "rgba(200,200,190,0.35)" : "rgba(100,100,95,0.35)";
+    ctx.lineWidth = 6;
+    ctx.lineCap = "round";
+    ctx.beginPath(); ctx.moveTo(x1, y); ctx.lineTo(x2, y); ctx.stroke();
+    ctx.lineCap = "butt";
+  });
+
+  // draw events
+  filtered.forEach(e => {
+    const x = yearToX(e.year);
+    const y = rowToY(e.row);
+    const isDefeat = e.type === "defeat";
+    const r = isDefeat ? 7 : 6;
+
+    // stem line to axis
+    ctx.strokeStyle = dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)";
+    ctx.lineWidth = 0.5;
+    ctx.beginPath(); ctx.moveTo(x, axisY); ctx.lineTo(x, y); ctx.stroke();
+
+    // dot
+    ctx.fillStyle = e.color;
+    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+
+    if (isDefeat) {
+      ctx.strokeStyle = dark ? "#fff" : "#fff";
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+
+    // label
+    ctx.fillStyle = textSecondary;
+    ctx.font = "10px var(--font-sans, sans-serif)";
+    ctx.textAlign = "center";
+    const labelY = y + r + 12;
+    if (labelY < TOTAL_H - 4) {
+      ctx.fillText(e.short, x, labelY);
+    }
+
+    hitTargets.push({ x, y, r: r + 8, event: e });
+  });
+}
+
+function resizeAndDraw() {
+  const container = canvas.parentElement;
+  W = container.offsetWidth || 680;
+  canvas.width = W;
+  canvas.height = TOTAL_H;
+  canvas.style.width = W + "px";
+  canvas.style.height = TOTAL_H + "px";
+  draw();
+}
+
+canvas.addEventListener('mousemove', function(ev) {
+  const rect = canvas.getBoundingClientRect();
+  const mx = ev.clientX - rect.left;
+  const my = ev.clientY - rect.top;
+  let found = null;
+  for (const t of hitTargets) {
+    const dist = Math.sqrt((mx - t.x) ** 2 + (my - t.y) ** 2);
+    if (dist < t.r) { found = t; break; }
+  }
+  if (found) {
+    canvas.style.cursor = 'pointer';
+    const e = found.event;
+    const tc = TAG_COLORS[e.type] || TAG_COLORS.battle;
+    cardTag.textContent = TYPE_LABELS[e.type];
+    cardTag.style.background = tc.bg;
+    cardTag.style.color = tc.text;
+    cardTitle.textContent = e.year + " — " + e.label;
+    cardBody.textContent = e.detail;
+    card.classList.add('visible');
+    const cw = 210, ch = 110;
+    let cx = ev.clientX - rect.left + 14;
+    let cy = ev.clientY - rect.top - 20;
+    if (cx + cw > W) cx = ev.clientX - rect.left - cw - 10;
+    if (cy + ch > TOTAL_H) cy = TOTAL_H - ch - 4;
+    if (cy < 0) cy = 4;
+    card.style.left = cx + "px";
+    card.style.top = cy + "px";
+  } else {
+    canvas.style.cursor = 'default';
+    card.classList.remove('visible');
+  }
+});
+
+canvas.addEventListener('mouseleave', function() {
+  card.classList.remove('visible');
+});
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    activeFilter = this.dataset.filter;
+    draw();
+  });
+});
+
+resizeAndDraw();
+window.addEventListener('resize', resizeAndDraw);
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', draw);
+</script>
