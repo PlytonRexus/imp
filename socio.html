@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UPSC GS-I | Modern History of India — Timeline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;700&family=Cormorant+Garamond:ital,wght@0,700;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:         #100f0a;
+  --surface:    #181611;
+  --card:       #1e1c13;
+  --card-hover: #252216;
+  --border:     #32301e;
+  --line:       #3a3621;
+  --text:       #ddd3b4;
+  --text-dim:   #8a8068;
+  --text-muted: #5a5240;
+  --bright:     #f0e6cc;
+  --gold:       #c4963a;
+  --gold-dim:   #7a5e22;
+
+  --cat-economic:      #c0392b;
+  --cat-constitutional:#2980b9;
+  --cat-military:      #d35400;
+  --cat-nationalist:   #27ae60;
+  --cat-reform:        #8e44ad;
+  --cat-doctrine:      #e6a817;
+  --cat-press:         #16a085;
+
+  --era1-bg: #120d12;
+  --era2-bg: #0d1218;
+  --era3-bg: #0d1210;
+  --era4-bg: #141008;
+  --era5-bg: #0d0e18;
+  --era6-bg: #110d08;
+  --era7-bg: #080e10;
+
+  --radius: 4px;
+  --shadow: 0 2px 12px rgba(0,0,0,0.5);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 17px;
+  line-height: 1.65;
+  min-height: 100vh;
+}
+
+/* ── HEADER ─────────────────────────────────── */
+#header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(16,15,10,0.97);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(8px);
+  padding: 14px 24px 10px;
+}
+
+#header-top {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+h1 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+#subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.05em;
+}
+
+#count-display {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-family: 'JetBrains Mono', monospace;
+  white-space: nowrap;
+  align-self: center;
+}
+
+#search-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+#search {
+  flex: 1;
+  max-width: 360px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: 'Crimson Pro', serif;
+  font-size: 15px;
+  padding: 7px 12px;
+  border-radius: var(--radius);
+  outline: none;
+  transition: border-color .2s;
+}
+#search:focus { border-color: var(--gold-dim); }
+#search::placeholder { color: var(--text-muted); }
+
+#clear-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-family: 'JetBrains Mono', monospace;
+  transition: all .15s;
+  display: none;
+}
+#clear-btn:hover { color: var(--text); border-color: var(--gold-dim); }
+
+/* ── CATEGORY FILTERS ───────────────────────── */
+#filters {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.filter-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 3px;
+  border: 1px solid transparent;
+  font-size: 12.5px;
+  font-family: 'JetBrains Mono', monospace;
+  cursor: pointer;
+  transition: all .15s;
+  user-select: none;
+  opacity: 0.45;
+}
+.filter-chip.active { opacity: 1; }
+.filter-chip .dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.filter-chip:hover { opacity: 0.85; }
+
+.chip-economic    { border-color: var(--cat-economic); color: var(--cat-economic); }
+.chip-constitutional { border-color: var(--cat-constitutional); color: var(--cat-constitutional); }
+.chip-military    { border-color: var(--cat-military); color: var(--cat-military); }
+.chip-nationalist { border-color: var(--cat-nationalist); color: var(--cat-nationalist); }
+.chip-reform      { border-color: var(--cat-reform); color: var(--cat-reform); }
+.chip-doctrine    { border-color: var(--cat-doctrine); color: var(--cat-doctrine); }
+.chip-press       { border-color: var(--cat-press); color: var(--cat-press); }
+
+/* ── ERA NAVIGATION ─────────────────────────── */
+#era-nav {
+  display: flex;
+  gap: 4px;
+  padding: 8px 24px;
+  overflow-x: auto;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  scrollbar-width: none;
+}
+#era-nav::-webkit-scrollbar { display: none; }
+
+.era-pill {
+  white-space: nowrap;
+  padding: 4px 12px;
+  border-radius: 2px;
+  font-size: 11.5px;
+  font-family: 'JetBrains Mono', monospace;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  transition: all .15s;
+  background: none;
+}
+.era-pill:hover { color: var(--bright); border-color: var(--gold-dim); }
+
+/* ── TIMELINE CONTAINER ─────────────────────── */
+#timeline {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+/* ── ERA SECTION ────────────────────────────── */
+.era-section {
+  margin-top: 0;
+}
+
+.era-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 28px 0 18px;
+  position: relative;
+}
+
+.era-header::before {
+  content: '';
+  position: absolute;
+  left: -24px; right: -24px;
+  top: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.era-section:nth-child(1) .era-header::before { background: var(--era1-bg); }
+.era-section:nth-child(2) .era-header::before { background: var(--era2-bg); }
+.era-section:nth-child(3) .era-header::before { background: var(--era3-bg); }
+.era-section:nth-child(4) .era-header::before { background: var(--era4-bg); }
+.era-section:nth-child(5) .era-header::before { background: var(--era5-bg); }
+.era-section:nth-child(6) .era-header::before { background: var(--era6-bg); }
+.era-section:nth-child(7) .era-header::before { background: var(--era7-bg); }
+
+.era-badge {
+  background: var(--gold-dim);
+  color: var(--bg);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 2px;
+  white-space: nowrap;
+  position: relative;
+  z-index: 1;
+}
+
+.era-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--bright);
+  letter-spacing: 0.03em;
+  position: relative;
+  z-index: 1;
+}
+
+.era-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-style: italic;
+  position: relative;
+  z-index: 1;
+}
+
+.era-count {
+  margin-left: auto;
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-muted);
+  position: relative;
+  z-index: 1;
+}
+
+/* ── EVENTS WRAPPER ─────────────────────────── */
+.events-wrapper {
+  position: relative;
+  padding-left: 80px;
+}
+
+.events-wrapper::before {
+  content: '';
+  position: absolute;
+  left: 36px;
+  top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--line) 40px, var(--line) calc(100% - 40px), transparent);
+}
+
+/* ── EVENT CARD ─────────────────────────────── */
+.event-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  margin-bottom: 6px;
+  position: relative;
+}
+
+.event-row.hidden { display: none; }
+
+.year-col {
+  position: absolute;
+  left: -80px;
+  width: 72px;
+  text-align: right;
+  padding-top: 10px;
+}
+
+.year-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gold);
+  display: block;
+}
+
+.month-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  display: block;
+}
+
+.dot-col {
+  position: absolute;
+  left: -48px;
+  padding-top: 13px;
+}
+
+.timeline-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid var(--bg);
+  flex-shrink: 0;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 3px solid transparent;
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  cursor: pointer;
+  flex: 1;
+  transition: background .15s, box-shadow .15s;
+  position: relative;
+}
+
+.card:hover {
+  background: var(--card-hover);
+  box-shadow: var(--shadow);
+}
+
+.card.expanded {
+  background: var(--card-hover);
+  box-shadow: var(--shadow);
+}
+
+.card-header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.card-title {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--bright);
+  flex: 1;
+  min-width: 200px;
+}
+
+.cat-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  white-space: nowrap;
+  opacity: 0.8;
+  border: 1px solid currentColor;
+}
+
+.card-short {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-top: 3px;
+  line-height: 1.5;
+}
+
+/* Expanded content */
+.card-body {
+  display: none;
+  margin-top: 12px;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+
+.card.expanded .card-body {
+  display: block;
+  animation: fadeIn .2s ease;
+}
+
+@keyframes fadeIn { from{opacity:0;transform:translateY(-4px)} to{opacity:1;transform:none} }
+
+.card-detail {
+  font-size: 14.5px;
+  color: var(--text);
+  margin-bottom: 10px;
+  line-height: 1.7;
+}
+
+.card-quote {
+  background: rgba(196,150,58,0.07);
+  border-left: 2px solid var(--gold-dim);
+  padding: 8px 12px;
+  margin: 10px 0;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--text-dim);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.card-quote cite {
+  display: block;
+  font-size: 12px;
+  font-style: normal;
+  color: var(--text-muted);
+  margin-top: 4px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.upsc-box {
+  background: rgba(196,150,58,0.05);
+  border: 1px solid var(--gold-dim);
+  border-radius: var(--radius);
+  padding: 8px 12px;
+  margin-top: 10px;
+}
+
+.upsc-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.upsc-text {
+  font-size: 13.5px;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+.pyq-tag {
+  display: inline-block;
+  background: rgba(192,57,43,0.15);
+  border: 1px solid rgba(192,57,43,0.4);
+  color: #e07060;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 2px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+/* Category-specific border colors */
+.card[data-category="economic"]       { border-left-color: var(--cat-economic); }
+.card[data-category="constitutional"] { border-left-color: var(--cat-constitutional); }
+.card[data-category="military"]       { border-left-color: var(--cat-military); }
+.card[data-category="nationalist"]    { border-left-color: var(--cat-nationalist); }
+.card[data-category="reform"]         { border-left-color: var(--cat-reform); }
+.card[data-category="doctrine"]       { border-left-color: var(--cat-doctrine); }
+.card[data-category="press"]          { border-left-color: var(--cat-press); }
+
+.dot-economic       { background: var(--cat-economic); }
+.dot-constitutional { background: var(--cat-constitutional); }
+.dot-military       { background: var(--cat-military); }
+.dot-nationalist    { background: var(--cat-nationalist); }
+.dot-reform         { background: var(--cat-reform); }
+.dot-doctrine       { background: var(--cat-doctrine); }
+.dot-press          { background: var(--cat-press); }
+
+.tag-economic       { color: var(--cat-economic); border-color: var(--cat-economic); }
+.tag-constitutional { color: var(--cat-constitutional); border-color: var(--cat-constitutional); }
+.tag-military       { color: var(--cat-military); border-color: var(--cat-military); }
+.tag-nationalist    { color: var(--cat-nationalist); border-color: var(--cat-nationalist); }
+.tag-reform         { color: var(--cat-reform); border-color: var(--cat-reform); }
+.tag-doctrine       { color: var(--cat-doctrine); border-color: var(--cat-doctrine); }
+.tag-press          { color: var(--cat-press); border-color: var(--cat-press); }
+
+/* ── EMPTY STATE ────────────────────────────── */
+#empty-state {
+  display: none;
+  text-align: center;
+  padding: 60px 0;
+  color: var(--text-muted);
+  font-style: italic;
+  font-size: 16px;
+}
+
+/* ── SEARCH HIGHLIGHT ───────────────────────── */
+mark {
+  background: rgba(196,150,58,0.3);
+  color: inherit;
+  border-radius: 2px;
+}
+
+/* ── SCROLLBAR ──────────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ── LEGEND ROW ─────────────────────────────── */
+#legend {
+  padding: 6px 24px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  flex-wrap: wrap;
+}
+#legend span { color: var(--text-dim); }
+
+@media (max-width: 640px) {
+  #header { padding: 12px 16px 8px; }
+  h1 { font-size: 17px; }
+  #timeline { padding: 0 16px 60px; }
+  .events-wrapper { padding-left: 60px; }
+  .events-wrapper::before { left: 24px; }
+  .year-col { left: -62px; width: 54px; }
+  .year-badge { font-size: 11px; }
+  .dot-col { left: -34px; }
+  .era-title { font-size: 17px; }
+}
+</style>
+</head>
+<body>
+
+<div id="header">
+  <div id="header-top">
+    <h1>Modern History of India</h1>
+    <span id="subtitle">UPSC GS-I | 1600–1948</span>
+    <span id="count-display"></span>
+  </div>
+  <div id="search-row">
+    <input type="text" id="search" placeholder="Search events, personalities, acts, battles…" autocomplete="off">
+    <button id="clear-btn" onclick="clearSearch()">✕ clear</button>
+  </div>
+  <div id="filters">
+    <div class="filter-chip chip-economic active" onclick="toggleFilter('economic')" title="Economic">
+      <span class="dot" style="background:var(--cat-economic)"></span>Economic
+    </div>
+    <div class="filter-chip chip-constitutional active" onclick="toggleFilter('constitutional')" title="Constitutional">
+      <span class="dot" style="background:var(--cat-constitutional)"></span>Constitutional
+    </div>
+    <div class="filter-chip chip-military active" onclick="toggleFilter('military')" title="Military / Wars">
+      <span class="dot" style="background:var(--cat-military)"></span>Military
+    </div>
+    <div class="filter-chip chip-nationalist active" onclick="toggleFilter('nationalist')" title="Nationalist Movement">
+      <span class="dot" style="background:var(--cat-nationalist)"></span>Nationalist
+    </div>
+    <div class="filter-chip chip-reform active" onclick="toggleFilter('reform')" title="Social / Religious Reform">
+      <span class="dot" style="background:var(--cat-reform)"></span>Reform
+    </div>
+    <div class="filter-chip chip-doctrine active" onclick="toggleFilter('doctrine')" title="Doctrines & Policies">
+      <span class="dot" style="background:var(--cat-doctrine)"></span>Doctrine
+    </div>
+    <div class="filter-chip chip-press active" onclick="toggleFilter('press')" title="Press & Education">
+      <span class="dot" style="background:var(--cat-press)"></span>Press/Education
+    </div>
+  </div>
+</div>
+
+<div id="era-nav">
+  <button class="era-pill" onclick="jumpToEra('era1')">▸ Company Origins (1600–1757)</button>
+  <button class="era-pill" onclick="jumpToEra('era2')">▸ Conquest (1757–1813)</button>
+  <button class="era-pill" onclick="jumpToEra('era3')">▸ Consolidation (1813–1857)</button>
+  <button class="era-pill" onclick="jumpToEra('era4')">▸ Crown Rule (1857–1885)</button>
+  <button class="era-pill" onclick="jumpToEra('era5')">▸ Early Nationalism (1885–1919)</button>
+  <button class="era-pill" onclick="jumpToEra('era6')">▸ Gandhian Era (1919–1942)</button>
+  <button class="era-pill" onclick="jumpToEra('era7')">▸ Independence (1942–1948)</button>
+</div>
+
+<div id="legend">
+  <span>Click any event to expand details + UPSC angle</span>
+  &nbsp;·&nbsp;
+  <span style="color:#e07060">PYQ</span> = Past Year Question topic
+</div>
+
+<div id="timeline"></div>
+<div id="empty-state">No events match your search or filter.</div>
+
+<script>
+// ── EVENT DATA ────────────────────────────────────────────────────────────────
+const events = [
+
+// ═══ ERA 1: Company Origins 1600–1757 ════════════════════════════════════════
+{ era:"era1", year:1600, title:"East India Company (EIC) Founded",
+  cat:"constitutional",
+  short:"Queen Elizabeth I grants monopoly charter on trade east of the Cape of Good Hope.",
+  detail:"The EIC started as a purely commercial body — a joint-stock company of London merchants. It had no intention of governing territory. Its transformation into a ruling power over 200 years is one of history's most extraordinary corporate overreaches.",
+  quote:"", quoteBy:"",
+  upsc:"Context for all subsequent events. Distinction between Company as trader vs. Company as ruler is a recurring UPSC theme. The 1833 Charter Act marks the formal transition from trade to governance.",
+  pyq:false, keywords:["eic","company","charter","trade","elizabeth","1600","founded"] },
+
+{ era:"era1", year:1744, title:"Carnatic Wars Begin",
+  cat:"military",
+  short:"Anglo-French rivalry for supremacy in southern India — three wars across 1744–63.",
+  detail:"The three Carnatic Wars (1744–48, 1749–54, 1756–63) were fought partly in India and partly as offshoots of European conflicts. The key figure: French Governor Dupleix (1742–54) pioneered the technique of interfering in Indian succession disputes, stationing French-officered troops at Indian courts — the model that Wellesley later copied as the Subsidiary Alliance.",
+  quote:"Dupleix first showed that the conquest of India was possible. The British concluded that since it was possible, it was also desirable.", quoteBy:"Robert Orme, British historian",
+  upsc:"Significance: established the template for European domination of Indian states. British victory ended French ambitions. Dupleix's methods directly inspired the Subsidiary Alliance. PYQ (2013): 'Several foreigners made India their homeland…'",
+  pyq:true, keywords:["carnatic","french","dupleix","clive","arcot","anglo-french","1744","pondicherry"] },
+
+{ era:"era1", year:1751, title:"Clive at Arcot — British Ascendancy Confirmed",
+  cat:"military",
+  short:"Robert Clive's defence of Arcot (1751) breaks French-backed power in the Deccan.",
+  detail:"With just 200 men, the 25-year-old Robert Clive held Arcot Fort against a French-backed force for 53 days. This single action shifted the balance of the Carnatic Wars permanently toward Britain. Clive's subsequent rise defines the early Company conquest era.",
+  quote:"", quoteBy:"",
+  upsc:"Important for understanding WHY Britain won the Carnatic Wars — leadership + logistics + local alliances, not just superior arms. Leads directly to Plassey (1757).",
+  pyq:false, keywords:["clive","arcot","arcot","carnatic","french","1751","deccan"] },
+
+// ═══ ERA 2: Conquest & Ring Fence 1757–1813 ══════════════════════════════════
+{ era:"era2", year:1757, title:"Battle of Plassey",
+  cat:"military",
+  short:"Clive defeats Nawab Siraj-ud-Daula; Company gains mastery over Bengal — the richest province in India.",
+  detail:"June 23, 1757. The battle was half-fought — Mir Jafar's betrayal (he commanded most of the Nawab's army and kept his troops out of battle) was arranged beforehand by Clive. The battle itself lasted barely hours. But it was the turning point: the Company went from a trading body to a territorial power virtually overnight. Mir Jafar was installed as the new Nawab and paid the Company enormous compensation.",
+  quote:"The victory at Plassey was not a military triumph; it was a commercial transaction ratified by a battle.", quoteBy:"Historian R.C. Dutt (paraphrase)",
+  upsc:"PYQ (multiple years): Compare Plassey and Buxar — Plassey gave Bengal; Buxar gave legal rights (Diwani). Plassey is the political turning point; Buxar is the administrative one. Also relevant to Drain of Wealth (Company's revenue extraction begins here).",
+  pyq:true, keywords:["plassey","clive","siraj","mir jafar","bengal","1757","diwani","nawab","buxar"] },
+
+{ era:"era2", year:1764, title:"Battle of Buxar",
+  cat:"military",
+  short:"Company defeats combined forces of the Nawab of Awadh, Mir Qasim of Bengal, and the Mughal Emperor — full political supremacy confirmed.",
+  detail:"Buxar (October 22, 1764) is militarily more significant than Plassey because the Company fought actual armies, not a betrayed one. The Treaty of Allahabad (1765) followed: the Mughal Emperor granted the Company the Diwani (revenue rights) of Bengal, Bihar, and Orissa. This transformed the Company from military victor to legitimate revenue-collector.",
+  quote:"", quoteBy:"",
+  upsc:"PYQ (2013, 2019): Key distinction from Plassey — Buxar ended all hope of Mughal recovery; the Diwani rights legally established the Drain of Wealth mechanism. The Company now collected Indian revenue rather than trading for it.",
+  pyq:true, keywords:["buxar","diwani","allahabad","mughal","awadh","mir qasim","1764","revenue","treaty"] },
+
+{ era:"era2", year:1765, title:"Ring Fence Policy Begins — Hastings as GG",
+  cat:"doctrine",
+  short:"Warren Hastings' defensive policy: protect Company territory with buffer states; avoid expansion; prevent French-Indian alliances.",
+  detail:"Warren Hastings (Governor-General 1773–85) articulated the Ring Fence approach: keep allied/subordinate Indian states as buffers around Company Bengal; do not directly annex; maintain bilateral defensive treaties. Awadh was the classic Ring Fence state — deliberately kept alive as a buffer between Bengal and the Maratha/Afghan threat. The policy was limited in practice: Hastings fought the First Anglo-Maratha War (1775–82) despite his defensive principle.",
+  quote:"The policy of the Company is to avoid offensive war… to maintain a strict defensive system, and to confine our dominions within the limits already acquired.", quoteBy:"Warren Hastings",
+  upsc:"Contrast with Wellesley's Subsidiary Alliance (Subordinate Union). Ring Fence = buffer; Subsidiary Alliance = subordination. The transition from one to the other marks the shift from defensive to offensive imperialism.",
+  pyq:false, keywords:["ring fence","hastings","buffer","awadh","defensive","doctrine","1765","subordinate isolation"] },
+
+{ era:"era2", year:1770, title:"Bengal Famine — 10 Million Dead",
+  cat:"economic",
+  short:"First great colonial famine: ~10 million deaths — approximately one-third of Bengal's population — three years after Plassey.",
+  detail:"The 1770 Bengal Famine occurred in the exact context of the Company's first systematic revenue extraction. The Company's records show that land revenue INCREASED in the famine year — 'the collections have come in with great punctuality' (Warren Hastings). No relief was organised. The famine set the template: colonial revenue extraction continued regardless of agricultural conditions.",
+  quote:"The collections have come in with great punctuality.", quoteBy:"Warren Hastings on revenue in the famine year, 1770",
+  upsc:"Key statistic: 10 million deaths, ~1/3 of Bengal's population. PYQ (2022): Directly cited in famine causation questions. Shows the revenue-extraction system's lethal indifference from its very first years. Pre-dates all famine commissions and relief structures.",
+  pyq:true, keywords:["famine","1770","bengal","10 million","deaths","hastings","revenue","drain"] },
+
+{ era:"era2", year:1773, title:"Regulating Act",
+  cat:"constitutional",
+  short:"Britain's first attempt to regulate the Company's governance — created the Governor-General position and a Supreme Court.",
+  detail:"The Regulating Act (1773) was Parliament's response to the Company's scandals (Clive's jagir, Warren Hastings's corruption) and to the financial crisis caused by the 1770 famine. It created a Governor-General of Bengal (not yet of India), a Supreme Court at Calcutta, and required the Company to submit its proceedings to the British government. It was deeply flawed — creating conflicts between the Governor-General and his Council — but it set the precedent of parliamentary oversight.",
+  quote:"", quoteBy:"",
+  upsc:"Part of the constitutional evolution sequence: Regulating Act (1773) → Pitt's India Act (1784) → Charter Acts (1813, 1833, 1853) → GOI Act (1858). Shows Parliament progressively asserting control over what started as a private company.",
+  pyq:false, keywords:["regulating act","1773","governor general","supreme court","parliament","company"] },
+
+{ era:"era2", year:1780, title:"Hicky's Bengal Gazette — India's First Newspaper",
+  cat:"press",
+  short:"James Augustus Hicky publishes India's first newspaper; it criticises the Company and is suppressed by 1782 — India's first press freedom battle.",
+  detail:"Hicky's Bengal Gazette (launched January 1780) was witty, irreverent, and deeply critical of Company officials including the Governor-General's wife. The Company used its control of the postal system to suppress distribution and eventually confiscated Hicky's press (1782). The suppression of the first Indian newspaper established a pattern that would repeat for 150 years.",
+  quote:"", quoteBy:"",
+  upsc:"Context for press law history. The first press freedom battle in India — predates Rammohan Roy's petition (1823) by 43 years. Shows the colonial state's instinctive hostility to press scrutiny from the very beginning.",
+  pyq:false, keywords:["hicky","gazette","press","1780","newspaper","first","freedom","suppression","calcutta"] },
+
+{ era:"era2", year:1784, title:"Pitt's India Act",
+  cat:"constitutional",
+  short:"Created the Board of Control — Parliament directly oversees Company governance; established the dual-government framework that lasted till 1858.",
+  detail:"The Pitt's India Act (1784) was a compromise: the Company retained trading and day-to-day administrative functions; a Board of Control (with a Secretary of State, the Chancellor of the Exchequer, and four Privy Councillors) supervised political, military, and revenue matters. This 'dual government' was famously criticised as 'double government' — but it stuck for 74 years.",
+  quote:"", quoteBy:"",
+  upsc:"Constitutional evolution sequence. The Board of Control (1784) becomes the Secretary of State for India (1858). Shows Parliament's growing role in Indian governance.",
+  pyq:false, keywords:["pitt","india act","1784","board of control","dual government","company","parliament"] },
+
+{ era:"era2", year:1793, title:"Permanent Settlement of Bengal",
+  cat:"economic",
+  short:"Lord Cornwallis fixes land revenue with zamindars of Bengal, Bihar, and Orissa — permanently. Creates a landlord class modelled on the English gentry.",
+  detail:"The Permanent Settlement (1793) fixed the revenue demand of zamindars to the government forever. Zamindars became hereditary owners of land as long as they paid. Peasants (ryots) became their tenants without security. The 90% revenue demand caused mass auction of zamindars' estates in the 1790s–1810s — purchased by merchants and moneylenders who had no agricultural interest. Agricultural investment was killed: why improve land if the benefit goes to your landlord?",
+  quote:"The Permanent Settlement created a class of landlords but did not create a class of agricultural improvers.", quoteBy:"R.C. Dutt",
+  upsc:"PYQ (multiple): Compare three land revenue systems. Permanent Settlement = most analysed. Key consequences: zamindar loyalism (pro-British), agricultural stagnation, peasant insecurity, Deccan Riots (1875), contribution to 1857 in Awadh.",
+  pyq:true, keywords:["permanent settlement","cornwallis","zamindari","bengal","1793","land revenue","ryot","zamindar","mahalwari","ryotwari"] },
+
+{ era:"era2", year:1798, title:"Wellesley as Governor-General — Subsidiary Alliance Era",
+  cat:"doctrine",
+  short:"Wellesley (1798–1805) transforms the Ring Fence into aggressive Subordinate Union via the Subsidiary Alliance — the instrument of empire-building.",
+  detail:"Lord Wellesley arrived with a mandate to neutralise the French threat after Napoleon's Egypt campaign (1798). He created the Subsidiary Alliance: Indian states must accept a Company force at their own expense; cede territory; surrender foreign policy; accept a Resident. States that resisted were defeated militarily and then made to sign on worse terms. In 7 years, Wellesley doubled British India's territory. He was recalled in 1805 for being too aggressive — but his framework defined the next 50 years.",
+  quote:"The British government in India is the paramount power… no state in India can maintain an equal or independent position in relation to that power.", quoteBy:"Lord Wellesley",
+  upsc:"PYQ Topic 5: Subsidiary Alliance mechanism, states affected, significance. Wellesley as a 'forward policy' precursor. The Subsidiary Alliance is the key instrument of 'Subordinate Union' in Panikkar's framework.",
+  pyq:true, keywords:["wellesley","subsidiary alliance","1798","paramountcy","doctrine","subordinate union","resident","napoleon"] },
+
+{ era:"era2", year:1799, title:"Fourth Anglo-Mysore War — Tipu Sultan Killed",
+  cat:"military",
+  short:"Seringapatam falls; Tipu Sultan killed — the last serious military challenge to British supremacy in southern India ends.",
+  detail:"Tipu Sultan (r. 1782–1799) was the Company's most formidable Indian opponent. He had modernised the Mysore army with French officers, developed rocketry warfare, sent ambassadors to Revolutionary France, and maintained an independent foreign policy. Wellesley used Tipu's French connections as the pretext for war. After the fall of Seringapatam (May 4, 1799), Mysore was partitioned — given partly to the Nizam of Hyderabad, partly restored to the Wodeyar dynasty under a Subsidiary Alliance.",
+  quote:"", quoteBy:"",
+  upsc:"Significance: ended French influence in India; established Company supremacy in the south; the restored Mysore became the model for 'subordinate native state.' Tipu is a complex figure in nationalist historiography — lionised as anti-colonial resistance.",
+  pyq:false, keywords:["tipu","mysore","seringapatam","1799","wellesley","fourth war","french","rockets","hyder ali"] },
+
+{ era:"era2", year:1803, title:"Second Anglo-Maratha War — Scindia and Bhonsle Defeated",
+  cat:"military",
+  short:"Wellesley defeats the most powerful Maratha chiefs — Delhi and Agra come under Company control; the Mughal Emperor becomes a Company pensioner.",
+  detail:"The Second Anglo-Maratha War (1803) was triggered by the Treaty of Bassein (1802) — the Peshwa accepted Subsidiary Alliance after being defeated by Holkar, giving the Company a pretext to fight Scindia and Bhonsle. The decisive battles: Assaye (Arthur Wellesley, the Governor-General's brother, later Duke of Wellington), Argaon, Delhi. The Mughal Emperor Shah Alam II, now under Company 'protection,' became a pensioner — the Mughal empire effectively ceased to function.",
+  quote:"", quoteBy:"",
+  upsc:"Three Anglo-Maratha Wars should be known in sequence. The 'Subordinate Isolation' strategy: divide the five Maratha chiefs (Peshwa, Scindia, Holkar, Bhonsle, Gaikwad) so they could never unite. Shows how 'divide and rule' worked in practice.",
+  pyq:false, keywords:["maratha","second war","scindia","bhonsle","bassein","1803","assaye","wellington","mughal"] },
+
+{ era:"era2", year:1813, title:"Charter Act 1813 — Trade Monopoly Ended",
+  cat:"constitutional",
+  short:"Company's trade monopoly over India ended; missionaries permitted; Rs 1 lakh earmarked for Indian education — the great education debate begins.",
+  detail:"The 1813 Charter Act was driven by British industrial manufacturers (Manchester) demanding access to Indian markets. Its three consequences: (1) Free trade with India killed Indian textile industries over the next 30 years. (2) Christian missionaries entered India, triggering both Westernisation and Hindu/Islamic revivalist responses. (3) The Rs 1 lakh education provision launched the Orientalist vs. Anglicist debate that culminated in Macaulay's Minute (1835).",
+  quote:"Let us endeavour to strike our roots into the soil by the gradual introduction and establishment of our own principles and opinions; of our laws, institutions, and manners; above all, as the source of every other improvement, of our religion.", quoteBy:"William Wilberforce, advocating for missionary clause, 1813",
+  upsc:"PYQ context: Charter Acts 1813, 1833, 1853 sequence. The 1813 Act is the economic turning point — free trade entry of British goods = deindustrialisation begins. Also education policy context (Rs 1 lakh → Macaulay 1835 → Wood's Despatch 1854).",
+  pyq:true, keywords:["charter act","1813","trade monopoly","missionaries","education","macaulay","wilberforce","orientalist"] },
+
+// ═══ ERA 3: Company Consolidation 1813–1857 ══════════════════════════════════
+{ era:"era3", year:1820, title:"Ryotwari Settlement — Madras and Bombay",
+  cat:"economic",
+  short:"Thomas Munro implements direct settlement with individual cultivators in Madras Presidency — the Ryotwari system covers ~51% of British India.",
+  detail:"The Ryotwari system (Thomas Munro, Madras 1820s; Elphinstone, Bombay) assessed each cultivating peasant directly — no zamindar intermediary. Revenue was set at 45–55% of estimated net produce (extremely high) and revised periodically. While it eliminated the zamindar exploitation, the assessment rate was ruinous. Peasants driven to moneylenders → Deccan Riots (1875) resulted.",
+  quote:"", quoteBy:"",
+  upsc:"Compare three land revenue systems. Ryotwari = most widespread (51% of area). Key for: Tamil Nadu, Andhra, Maharashtra history. Thomas Munro is an assessable personality.",
+  pyq:true, keywords:["ryotwari","munro","madras","bombay","land revenue","1820","elphinstone","peasant","cultivator"] },
+
+{ era:"era3", year:1821, title:"Sambad Kaumudi — India's First Indian-Owned Newspaper",
+  cat:"press",
+  short:"Rammohan Roy launches Bengal's first Indian-owned newspaper; simultaneously campaigns against Sati. The reform-press nexus established.",
+  detail:"The Sambad Kaumudi (1821, Bengali) was Rammohan Roy's platform for social reform and political critique. It reported on sati cases, argued for women's rights, and pushed back against the colonial administration's conservatism on reform. Roy also founded the Persian-language Mirat-ul-Akhbar (1822). His 1823 petition against the Licensing Regulations is India's first documented press freedom battle.",
+  quote:"The unlimited power of the Government over the Press is the main instrument of keeping the people of this country in a state of ignorance and subjugation.", quoteBy:"Rammohan Roy, petition against Licensing Regulations, 1823",
+  upsc:"Rammohan Roy as a personality question anchor. Press + social reform nexus. The 1823 petition shows how political consciousness and press freedom were linked from the beginning of Indian modernity.",
+  pyq:false, keywords:["rammohan","sambad kaumudi","1821","newspaper","press","bengali","reform","sati","mirat"] },
+
+{ era:"era3", year:1828, title:"Brahmo Samaj Founded",
+  cat:"reform",
+  short:"Rammohan Roy founds the Brahmo Samaj — India's first modern religious reform organisation. Challenges idol worship, caste, and gender discrimination.",
+  detail:"The Brahmo Samaj (1828) was a theistic reformist movement — one God, no idols, rational religion, social reform. Its founding preceded the sati abolition (1829) which Roy had been campaigning for. The Brahmo Samaj influenced the Bengal Renaissance (Bankimchandra, Rabindranath Tagore was a later Brahmo). Its rationalism contrasted with the Arya Samaj's (1875) 'Back to the Vedas' approach.",
+  quote:"I regret to say that the present system of religion adhered to by the Hindus is not well calculated to promote their political interest.", quoteBy:"Rammohan Roy",
+  upsc:"PYQ (2021): Brahmo Samaj question. Roy as a personality. Compare Brahmo Samaj vs. Arya Samaj vs. Prarthana Samaj. The 'social reform as precondition for political awakening' argument.",
+  pyq:true, keywords:["brahmo samaj","rammohan","1828","reform","sati","monotheism","bengal renaissance","tagore"] },
+
+{ era:"era3", year:1829, title:"Sati Abolished — Regulation XVII",
+  cat:"reform",
+  short:"Lord William Bentinck abolishes sati (widow immolation) — Rammohan Roy's decades-long campaign succeeds.",
+  detail:"The prohibition of sati by Regulation XVII (1829) was the first major social legislation under British rule. It was preceded by Rammohan Roy's sustained campaign in the press and courts against the practice. The orthodox Hindu response ('we will appeal to the Privy Council in London') and Roy's counter-campaign (he went to London himself, 1831) shows the Indian reformist-colonial government alliance at its most productive.",
+  quote:"", quoteBy:"",
+  upsc:"PYQ context: Social reform legislation sequence — Sati (1829), Widow Remarriage Act (1856), Age of Consent Act (1891). Shows intersection of colonial policy and Indian reform movements. Bentinck as a reforming Governor-General.",
+  pyq:true, keywords:["sati","1829","bentinck","rammohan","reform","women","widow","regulation XVII"] },
+
+{ era:"era3", year:1833, title:"Charter Act 1833 — Governor-General of India Created",
+  cat:"constitutional",
+  short:"Company's China trade monopoly ended; Governor-General of India created; Law Commission with Macaulay — the IPC and education debates begin.",
+  detail:"The 1833 Act completely ended the Company's commercial character — it now governed without trading. Crucially: (1) 'Governor-General of India' title created — first was Lord William Bentinck — unifying administration. (2) Law Commission established — Macaulay as first Law Member drafted the Indian Penal Code (1837, enacted 1860). (3) A formal non-discrimination clause in service ('no person shall be excluded on grounds of religion, birthplace, descent, or colour') — largely theoretical but constitutionally significant.",
+  quote:"It may be that the public mind of India may expand under our system till it has outgrown that system; that by good government we may educate our subjects into a capacity for better government, that having become instructed in European knowledge, they may, in some future age, demand European institutions.", quoteBy:"Macaulay in the House of Commons, 1833",
+  upsc:"PYQ context: Charter Acts sequence. Macaulay appears in BOTH 1833 (Law Commission) and 1835 (Education Minute) — note this continuity. The IPC (drafted here) is still India's criminal law framework.",
+  pyq:true, keywords:["charter act","1833","macaulay","governor general","law commission","ipc","india","bentinck","non-discrimination"] },
+
+{ era:"era3", year:1835, title:"Macaulay's Minute on Education",
+  cat:"press",
+  short:"Macaulay's decisive intervention ends the Orientalist-Anglicist debate — English education, not Sanskrit/Arabic, will be the medium of instruction. The 'class of interpreters' doctrine.",
+  detail:"On February 2, 1835, Thomas Macaulay submitted his Minute to Governor-General Bentinck. He argued (without reading Sanskrit) that Western libraries were worth more than all Eastern learning. His explicit goal: 'a class of persons, Indian in blood and colour, but English in taste, in opinions, in morals, and in intellect.' Bentinck accepted the recommendations on March 7, 1835. The intended result: loyal colonial administrators. The actual result: the nationalist leadership that dismantled British rule.",
+  quote:"We must at present do our best to form a class who may be interpreters between us and the millions whom we govern; a class of persons Indian in blood and colour, but English in taste, in opinions, in morals, and in intellect.", quoteBy:"T.B. Macaulay, Minute on Indian Education, February 1835",
+  upsc:"PYQ (multiple): British education policy. The 'colonial education paradox' — designed to produce loyalists, produced nationalists. The quote is essential to memorise. Connect to Wood's Despatch (1854), Hunter Commission (1882), and nationalist alternatives (Santiniketan, Nai Talim).",
+  pyq:true, keywords:["macaulay","minute","education","1835","orientalist","anglicist","english","bentinck","colonial education","interpreters"] },
+
+{ era:"era3", year:1838, title:"First Anglo-Afghan War — The Great Disaster",
+  cat:"military",
+  short:"The Forward Policy's first catastrophic test: 16,000 British and Indian troops enter Afghanistan; only one survivor (Dr. Brydon) reaches Jalalabad.",
+  detail:"Governor-General Lord Auckland ordered the invasion of Afghanistan (1838) to replace the independent Amir Dost Mohammad with the British-backed Shah Shuja. Initial success was followed by occupation and insurgency. In January 1842, the retreating British force of ~16,000 was massacred in the Khyber passes — one of the greatest British military disasters. The disaster vindicated John Lawrence's later 'Masterly Inactivity' argument for the next 35 years.",
+  quote:"", quoteBy:"",
+  upsc:"Essential context for the Great Game debate. Shows the cost of the Forward Policy before Masterly Inactivity articulated as a doctrine. Compare with the Second Anglo-Afghan War (1878) — same forward policy, better tactical outcome but same strategic failure.",
+  pyq:false, keywords:["first afghan war","1838","1842","auckland","afghanistan","khyber","disaster","kabul","masterly inactivity"] },
+
+{ era:"era3", year:1848, title:"Lord Dalhousie — Doctrine of Lapse Applied",
+  cat:"doctrine",
+  short:"Dalhousie (1848–56) aggressively applies the Doctrine of Lapse — denying adoption rights to rulers without male heirs — to annex Satara (1848), Nagpur, Jhansi, and others.",
+  detail:"The Doctrine of Lapse held that if a princely ruler died without a natural male heir, the state 'lapsed' to the Company — adoption was not recognised as a basis for succession without Company approval. Dalhousie used it to annex: Satara (1848), Jaitpur and Sambhalpur (1849), Baghat (1850), Udaipur (1852), Jhansi (1853), Nagpur (1854). These annexations alienated the princes and created the leadership for 1857 (Rani Lakshmibai of Jhansi, Nana Sahib of Nagpur).",
+  quote:"", quoteBy:"",
+  upsc:"PYQ Topic 6 — Doctrine of Lapse mechanism, states annexed, and its role in causing 1857. Note: Awadh (1856) was annexed NOT by Lapse but by 'mismanagement' — a separate and arguably more provocative tool.",
+  pyq:true, keywords:["doctrine of lapse","dalhousie","jhansi","nagpur","satara","1848","annexation","adoption","1857"] },
+
+{ era:"era3", year:1853, title:"Charter Act 1853 + First Railway: Bombay–Thane",
+  cat:"constitutional",
+  short:"Last Company charter — ICS open competition established. April 16: first Indian railway runs 34 km from Bombay to Thane.",
+  detail:"The 1853 Charter Act introduced genuinely competitive examinations for the Indian Civil Service — ending patronage. But exams were held in London (with a curriculum weighted to European classics), disadvantaging Indians. Surendranath Banerjee (1869) became one of the first Indians to pass — and was then dismissed on a trumped-up charge. Simultaneously: India's first railway (Bombay to Thane, 34 km, April 16, 1853) — the beginning of the 55,000 km network by 1947, built largely on the exploitative 'guarantee system.'",
+  quote:"", quoteBy:"",
+  upsc:"Charter Acts sequence. ICS competitive exam → Congress's lifelong demand for simultaneous India+England exams. Railway guarantee system → Drain of Wealth channel. The 1853 Act ends 'until Parliament otherwise provides' — Parliament provides via the GOI Act 1858.",
+  pyq:true, keywords:["charter act","1853","ics","railway","bombay thane","1853","civil service","guarantee","competition"] },
+
+{ era:"era3", year:1854, title:"Wood's Education Despatch — Magna Carta of Indian Education",
+  cat:"press",
+  short:"Charles Wood's Despatch establishes India's modern university framework: Calcutta, Bombay, Madras Universities; grants-in-aid; women's education endorsed.",
+  detail:"The Despatch of July 19, 1854 created a comprehensive educational ladder from primary schools to universities. Three universities were established in 1857 (Calcutta, Bombay, Madras) — affiliating bodies modelled on London University. The grants-in-aid system enabled missionary and private schools. Women's education was explicitly endorsed — remarkable for 1854. The 'downward filtration' theory was formalised: educate the elite, knowledge filters down. In practice, filtration stopped at the elite; the masses stayed illiterate (literacy at independence: ~17%).",
+  quote:"", quoteBy:"",
+  upsc:"PYQ context: Education policy. 'Magna Carta of Indian education' is the standard label — always use it. The 17% literacy figure at independence shows the failure of downward filtration. Wood's Despatch → universities (1857) → Hunter Commission (1882) → Sadler Commission (1917) is the educational policy sequence.",
+  pyq:true, keywords:["wood","despatch","1854","education","university","calcutta","bombay","madras","1857","women","filtration"] },
+
+{ era:"era3", year:1856, title:"Awadh Annexed on 'Mismanagement' Grounds",
+  cat:"doctrine",
+  short:"Dalhousie annexes Awadh — NOT via Doctrine of Lapse (there was a legitimate heir) but charging the Nawab with 'misgovernance' — a new and more dangerous precedent.",
+  detail:"The annexation of Awadh (February 13, 1856) was significant beyond the territory gained. It showed that even a legitimate ruler could be deposed for alleged mismanagement. This alarmed every Indian prince. More critically: the disbanded Awadh army (~60,000 soldiers), the resentful talukdars (landlords), and the outraged Muslim religious establishment all had personal reasons to rebel. The 1857 Revolt's most intense phase was in Awadh (the siege of Lucknow). Dalhousie's quote reveals the paternalist logic.",
+  quote:"I wish to put upon record my strong and deliberate opinion that the annexation of Oudh to the British dominions has been a measure not less wise and politic than it has been just and necessary.", quoteBy:"Lord Dalhousie",
+  upsc:"PYQ context: 1857 Revolt causes — Awadh annexation is consistently listed as one of the three key causes (with Doctrine of Lapse and cartridge controversy). The 'mismanagement' precedent is analytically distinct from Doctrine of Lapse and shows the escalation of annexation logic.",
+  pyq:true, keywords:["awadh","oudh","1856","dalhousie","mismanagement","annexation","nawab","talukdar","1857","lucknow"] },
+
+// ═══ ERA 4: Great Revolt & Crown Rule 1857–1885 ══════════════════════════════
+{ era:"era4", year:1857, title:"The Great Revolt of 1857",
+  cat:"military",
+  short:"The most serious challenge to British rule — sepoys, princes, peasants, and dispossessed nobles revolt simultaneously across north and central India.",
+  detail:"May 10, 1857: the mutiny at Meerut begins. By June, Delhi, Kanpur, Lucknow, Jhansi, and Bareilly are in revolt. Key leaders: Bahadur Shah Zafar (symbolic Mughal figurehead), Nana Sahib (Kanpur), Rani Lakshmibai (Jhansi), Kunwar Singh (Bihar), Begum Hazrat Mahal (Lucknow). Causes: military grievances (cartridge controversy, General Service Enlistment Act), political (Doctrine of Lapse, Awadh annexation), economic (land revenue, deindustrialisation), social (fears of religious interference/conversion). The revolt was suppressed by late 1858 using railways, Sikh and Gurkha troops, and naval power.",
+  quote:"The causes of the revolt were deeper than the greased cartridges. The Indian masses were responding to the accumulated weight of a century of conquest and extraction.", quoteBy:"Historian Bipan Chandra (paraphrase)",
+  upsc:"PYQ (multiple years): Nature of 1857 — Sepoy Mutiny vs. First War of Independence. Causes, course, consequences. The historiographical debate (V.D. Savarkar: First War of Independence; British: Sepoy Mutiny; Marxists: feudal revolt). Consequences → GOI Act 1858.",
+  pyq:true, keywords:["1857","revolt","mutiny","sepoy","bahadur shah","nana sahib","jhansi","lakshmibai","cartridge","lucknow","delhi","causes"] },
+
+{ era:"era4", year:1858, title:"Government of India Act 1858 + Queen's Proclamation",
+  cat:"constitutional",
+  short:"Company abolished; Crown takes direct sovereignty; Viceroy replaces Governor-General; Secretary of State for India created. Queen's Proclamation promises equality and non-interference.",
+  detail:"The GOI Act 1858 made three structural changes: (1) East India Company dissolved — its territories, assets, debts transferred to the Crown. (2) Secretary of State for India created (Cabinet minister, India Council advisory body). (3) Viceroy as the Crown's personal representative — Lord Canning was first. The Queen's Proclamation (November 1, 1858) promised: no more annexations; non-interference in religion; equal access to service regardless of race. These promises were largely unfulfilled — but they became the constitutional standard against which British rule was judged.",
+  quote:"Our subjects, of whatever race or creed, be freely and impartially admitted to offices in our service, the duties of which they may be qualified by their education, ability, and integrity duly to discharge.", quoteBy:"Queen Victoria's Proclamation, November 1, 1858",
+  upsc:"PYQ (multiple): 'The GOI Act 1858 was not a reform but a change of label. Comment.' Key: what changed (institution) vs. what didn't (extractive character, racial hierarchy, lack of Indian representation). The Proclamation's unfulfilled promises became the Congress's constitutional lever.",
+  pyq:true, keywords:["goi act","1858","viceroy","canning","queen proclamation","company abolished","secretary of state","crown rule","constitution"] },
+
+{ era:"era4", year:1859, title:"Indigo Revolt (Nil Bidroha) 1859–60",
+  cat:"nationalist",
+  short:"Bengal's peasants revolt against the tinkathia system of forced indigo cultivation — first successful peasant campaign under British rule.",
+  detail:"The Indigo Revolt (1859–60) was a peasant uprising against European indigo planters who forced cultivators to grow indigo under the coercive tinkathia system (3/20 of land must grow indigo at below-market prices). Dinabandhu Mitra's play Nil Darpan (1858) had already publicised the abuses. The revolt succeeded: the Indigo Commission of 1860 effectively ended forced indigo cultivation in Bengal. Significance: the first time peasants forced a change in British agricultural policy through organised resistance.",
+  quote:"", quoteBy:"",
+  upsc:"Compare with later peasant movements (Champaran 1917, Bardoli 1928). The 'Nil Darpan' play as an instrument of mobilisation — press and culture as tools of resistance. The role of Christian missionaries (surprisingly supportive of peasants here).",
+  pyq:false, keywords:["indigo","nil bidroha","1859","tinkathia","peasant","bengal","nil darpan","mitra","revolt"] },
+
+{ era:"era4", year:1861, title:"Indian Police Act 1861",
+  cat:"constitutional",
+  short:"Centralised para-military police force established across British India — directly in response to 1857; racial hierarchy built into the structure.",
+  detail:"The Indian Police Act (1861) created a professional, armed police force in each province under an Inspector-General. Senior officers (Superintendent and above): almost exclusively British. Lower ranks: Indian, deliberately underpaid to prevent accumulation of power. The Act created the Special Branch and Criminal Investigation Departments (CIDs) — specifically for surveillance of nationalist activity. Every major nationalist leader from Tilak to Gandhi had a CID file from the moment they entered politics.",
+  quote:"", quoteBy:"",
+  upsc:"Context for understanding the coercive apparatus of colonial rule. Police as an instrument of political suppression — relevant to questions on Jallianwala Bagh, Simon Commission protests, Quit India Movement. The CID surveillance system shows that 'consent' was always backed by coercion.",
+  pyq:false, keywords:["police act","1861","cid","inspector general","surveillance","colonial","coercion","1857","special branch"] },
+
+{ era:"era4", year:1865, title:"Russian Expansion in Central Asia",
+  cat:"doctrine",
+  short:"Russia annexes Tashkent (1865), Samarkand (1868), Khiva (1873), Merv (1884) — the Great Game reaches its peak; Forward Policy vs. Masterly Inactivity debate intensifies.",
+  detail:"Russia's rapid advance through Central Asia — reducing the distance from Russian territory to British India's frontier from ~3,000 km (1840) to ~600 km (1885) — was the strategic context for the entire Afghan question. Each Russian annexation triggered a British debate: John Lawrence's Masterly Inactivity ('let Afghanistan be a buffer; Russia will be exhausted before reaching India') vs. Lytton/Rawlinson's Forward Policy ('extend British influence to the Hindu Kush before Russia reaches it').",
+  quote:"", quoteBy:"",
+  upsc:"The Great Game context. Three-school framework: Masterly Inactivity (Lawrence) vs. Forward Policy (Lytton, Curzon) vs. Buffer State (Ripon, 1907 Convention). The 1907 Anglo-Russian Convention ended the Great Game diplomatically.",
+  pyq:false, keywords:["russia","central asia","great game","tashkent","1865","forward policy","masterly inactivity","afghanistan","buffer"] },
+
+{ era:"era4", year:1867, title:"Dadabhai Naoroji — Drain of Wealth Theory",
+  cat:"economic",
+  short:"Naoroji presents 'England's Debt to India' — first systematic articulation of the Drain of Wealth theory. India is being bled to finance Britain.",
+  detail:"Dadabhai Naoroji's 1867 paper to the East India Association (London) launched a decades-long campaign to quantify British extraction. His calculation: India exported goods worth far more than it imported; the surplus disappeared as 'Home Charges' — salaries, pensions, interest on debt, railway profits — all paid from Indian revenue to Britain, with no return. His definitive work: Poverty and Un-British Rule in India (1901). He also served as the first Indian Member of the British Parliament (Finsbury Central, 1892).",
+  quote:"India has to bear the drain of her life-blood.", quoteBy:"Dadabhai Naoroji",
+  upsc:"PYQ (multiple): Drain of Wealth theory. Home Charges (~£30 million/year by 1900). Naoroji as a personality. Key stats: India's world manufacturing share 24.5% (1750) → 1.7% (1900). The theory transformed nationalism from moral grievance to economic indictment.",
+  pyq:true, keywords:["naoroji","drain of wealth","1867","home charges","poverty","economic","nationalist","grand old man","1892","parliament"] },
+
+{ era:"era4", year:1875, title:"Deccan Riots + Arya Samaj Founded",
+  cat:"economic",
+  short:"Deccan peasants burn moneylenders' account books — rural debt crisis under Ryotwari. Simultaneously, Dayananda Saraswati founds Arya Samaj in Bombay.",
+  detail:"The Deccan Riots (1875) were not anti-British — they targeted the immediate oppressor: Marwari and Gujarati moneylenders. Peasants burned account books, demanding debt cancellation. The riots led to the Deccan Agriculturists' Relief Act (1879), which provided some debt protection. The same year: Dayananda Saraswati founded the Arya Samaj in Bombay — 'Back to the Vedas,' Shuddhi (reconversion), Hindi promotion, opposition to idol worship and caste rigidity. The Arya Samaj became a significant social reform and later nationalist force.",
+  quote:"Go back to the Vedas.", quoteBy:"Swami Dayananda Saraswati",
+  upsc:"Deccan Riots = economic context for peasant movements. Arya Samaj = socio-religious reform + nationalism nexus. PYQ context: Arya Samaj's role in Hindu revivalism and nationalism; Shuddhi's communal consequences.",
+  pyq:true, keywords:["deccan riots","1875","arya samaj","dayananda","moneylender","ryotwari","shuddhi","debt","peasant","bombay"] },
+
+{ era:"era4", year:1876, title:"Great Famine 1876–78 — Lytton's Durbar",
+  cat:"economic",
+  short:"5–10 million die in Madras and Bombay Presidencies. Lord Lytton hosts lavish Imperial Durbar while famine rages. Grain exports continue.",
+  detail:"The Great Famine of 1876–78 affected 670,000 sq km across Madras, Bombay, Mysore, and Hyderabad. Viceroy Lord Lytton hosted the Imperial Durbar at Delhi (January 1877, proclaiming Queen Victoria as Empress of India) while famine deaths mounted. India exported ~320,000 tons of grain during the famine. Richard Temple's initial relief efforts were criticised as 'too generous'; his successor cut rations below humane minimums. Florence Nightingale wrote to the Secretary of State: 'The people perish, not from famine alone, but from the wasting diseases which accompany destitution.'",
+  quote:"The laissez-faire policies of the colonial state were, in the most literal sense, a sentence of death for millions.", quoteBy:"Mike Davis, Late Victorian Holocausts (2001)",
+  upsc:"PYQ (2022): Famines under British rule — causation question. Stats: 5–10 million deaths; 670,000 sq km affected. Strachey Famine Commission (1880) established. The 'free market ideology prevents famine relief' argument is the analytical core.",
+  pyq:true, keywords:["famine","1876","1878","lytton","durbar","madras","bombay","grain export","strachey","victoria","empress","nightingale"] },
+
+{ era:"era4", year:1878, title:"Vernacular Press Act + The Hindu Founded",
+  cat:"press",
+  short:"Lytton's 'Gagging Act' applies government censorship to vernacular papers only. Amrita Bazar Patrika converts overnight to English to escape the Act.",
+  detail:"The Vernacular Press Act (1878): a District Magistrate could demand security from any Indian-language newspaper and forfeit it for 'disaffection' — no court appeal. It exempted English-language papers. Amrita Bazar Patrika (Bengali) converted overnight to an English paper, becoming India's most famous act of press defiance. The Hindu (1878, G. Subramaniam, Madras) was founded as an English-language voice for South Indian moderate nationalism. The VPA was repealed by Lord Ripon (1882) — but the precedent was revived in the 1910 Indian Press Act.",
+  quote:"It was a deliberate attempt to silence the Indian voice. It showed the British knew they could not answer Indian arguments — only suppress them.", quoteBy:"Surendranath Banerjee",
+  upsc:"Press law sequence: Licensing Regulations (1823) → VPA (1878) → Indian Press Act (1910) → Defence of India Act (1942). The Amrita Bazar Patrika story is the best press defiance anecdote. Lord Ripon's repeal of VPA (1882) shows that some Viceroys were more liberal.",
+  pyq:true, keywords:["vernacular press act","1878","gagging act","amrita bazar","lytton","the hindu","english","press","censorship","ripon"] },
+
+{ era:"era4", year:1880, title:"Lord Ripon — Ilbert Bill + Buffer State Approach",
+  cat:"doctrine",
+  short:"Ripon (1880–84): reverses Lytton's aggressive policies; repeals VPA; proposes Ilbert Bill (Indian judges try Europeans); adopts diplomatic Buffer State stance on Afghanistan.",
+  detail:"Lord Ripon's viceroyalty (1880–84) was the most liberal British India saw before the 1920s. He repealed the Vernacular Press Act (1882), proposed local self-government (district and municipal boards), and most controversially: the Ilbert Bill (1883) — allowing Indian district judges to try European defendants. The resulting 'White Mutiny' (Europeans protesting loudly) forced a humiliating compromise. The agitation against the Ilbert Bill showed Indians that organised protest could force policy changes — a model for Congress two years later.",
+  quote:"", quoteBy:"",
+  upsc:"Ripon is an assessable personality. The Ilbert Bill controversy is significant: (1) showed European racial arrogance; (2) showed Indians that organised political agitation worked; (3) directly inspired the founding of INC (1885) as a 'safety valve' for Indian political energy.",
+  pyq:false, keywords:["ripon","ilbert bill","1880","vpa","local self government","1882","buffer","afghanistan","european","judge","white mutiny"] },
+
+{ era:"era4", year:1885, title:"Indian National Congress Founded",
+  cat:"nationalist",
+  short:"A.O. Hume, Dadabhai Naoroji, Dinshaw Wacha, and 72 delegates meet in Bombay — the INC begins as a moderate, constitutional, elite organisation.",
+  detail:"The founding session (December 28–30, 1885, Bombay) had 72 delegates — mostly lawyers, journalists, and professionals. A.O. Hume (retired ICS officer) was the organising force; the 'safety valve' theory (he wanted Congress to channel Indian discontent constitutionally) explains British ambivalence. Early demands: ICS exam in India, reduction of military expenditure, representative councils. The Congress met in different cities by design (railways made this possible), creating the first all-India political platform.",
+  quote:"What Bengal thinks today, India thinks tomorrow.", quoteBy:"Gopal Krishna Gokhale",
+  upsc:"PYQ (multiple): INC founding, 'safety valve' theory, Moderate phase significance. The founding session's demographic (lawyers, educated middle class) defines the 'elite nationalism' critique. The A.O. Hume controversy — was Congress a British creation or an Indian initiative?",
+  pyq:true, keywords:["congress","inc","1885","hume","naoroji","moderate","bombay","lawyers","safety valve","nationalist","political"] },
+
+// ═══ ERA 5: Early Nationalism 1885–1919 ══════════════════════════════════════
+{ era:"era5", year:1897, title:"Tilak's First Sedition Trial",
+  cat:"press",
+  short:"Tilak's Kesari articles on famine/plague deaths in Pune deemed seditious — convicted under Section 124A IPC; 18 months rigorous imprisonment.",
+  detail:"The 1896–97 famine and bubonic plague epidemic in Pune killed thousands. British response was heavy-handed (forced evacuations, intrusive searches). Tilak's Kesari articles — especially 'Shivaji's Utterances' — argued that even if British intentions were not malicious, their policies were killing Indians and self-defence was justified. The government prosecuted under Section 124A (Sedition). Tilak used the courtroom as a political platform. His conviction radicalised the nationalist movement and created the Extremist faction in Congress.",
+  quote:"Swaraj is my birthright and I shall have it.", quoteBy:"Bal Gangadhar Tilak",
+  upsc:"PYQ context: Tilak as a personality. Sedition law history. The distinction between Moderate (petition-based) and Extremist (mass agitation) phases. Tilak's second sedition trial (1908) is even more significant — 6 years in Mandalay.",
+  pyq:true, keywords:["tilak","sedition","1897","kesari","section 124a","swaraj","famine","plague","pune","extremist"] },
+
+{ era:"era5", year:1901, title:"Naoroji: 'Poverty and Un-British Rule in India'",
+  cat:"economic",
+  short:"Naoroji's definitive work quantifies the Drain — Home Charges ~£30 million/year; per capita income fallen to £2/year; India impoverished by policy, not fate.",
+  detail:"Naoroji's 1901 book synthesised decades of research. Key findings: Home Charges (pensions, interest on debt, Secretary of State's establishment, military stores from Britain) consumed ~1/3 of India's total revenue annually. Per capita income: approximately £2/year — below subsistence in British terms. India consistently exported more than it imported; the surplus was not reinvested in India but paid as Home Charges. The 'drain' was not accidental — it was structural. R.C. Dutt's Economic History of India (1902) provided the historical companion.",
+  quote:"Whether the drain is considered as tribute or otherwise, the fact remains that India is being bled to death by the policy of England.", quoteBy:"Dadabhai Naoroji",
+  upsc:"The Drain of Wealth bibliography. Naoroji (1901) + R.C. Dutt (1902) + Digby (1901) = the triumvirate of economic nationalist writing. Utsa Patnaik (JNU, 2018) estimated total drain at ~$45 trillion — for contemporary reference.",
+  pyq:true, keywords:["naoroji","poverty","1901","drain","home charges","economic","dutt","digby","per capita","income"] },
+
+{ era:"era5", year:1905, title:"Partition of Bengal + Swadeshi Movement",
+  cat:"nationalist",
+  short:"Lord Curzon partitions Bengal along Hindu-Muslim lines (October 16, 1905) — triggering the Swadeshi movement: boycott of British goods, national education, Swaraj demand.",
+  detail:"The Partition of Bengal (announced July 1905, effective October 16) divided Bengal into Muslim-majority East Bengal and Assam, and Hindu-majority West Bengal. British rationale: administrative efficiency. Nationalist interpretation: deliberate Hindu-Muslim divide to weaken Bengal's powerful nationalist movement. The response — Swadeshi — became India's first mass nationalist movement: bonfires of British cloth, picketing of shops, national schools, indigenous industry promotion. The Swadeshi era also produced revolutionary terrorism (Jugantar, Anushilan Samiti, Khudiram Bose's bomb, 1908).",
+  quote:"", quoteBy:"",
+  upsc:"PYQ (multiple): Partition of Bengal causes and significance; Swadeshi movement as a nationalist turning point. The partition was annulled in 1911 (Delhi Durbar) — but Bengal was permanently divided linguistically. Swadeshi = first mass movement before Gandhi.",
+  pyq:true, keywords:["partition of bengal","1905","curzon","swadeshi","boycott","nationalism","divide and rule","east bengal","annulled","1911"] },
+
+{ era:"era5", year:1906, title:"Muslim League Founded + Simla Deputation",
+  cat:"nationalist",
+  short:"A Muslim delegation meets Viceroy Minto at Simla; Muslim League established at Dhaka (December 1906) — the institutional origin of Muslim separatist politics.",
+  detail:"The Simla Deputation (October 1906) — led by Aga Khan — met Minto and demanded separate Muslim electorates. Minto's famous response acknowledged 'two great religions' with separate political identities. The Muslim League was founded at Dhaka (December 30, 1906). Initially conservative and pro-British, the League evolved under Mohammad Ali Jinnah into the vehicle of Pakistan demand (Lahore Resolution, 1940). The Morley-Minto Reforms (1909) granted separate electorates — institutionalising communal representation.",
+  quote:"I am as firmly convinced as I believe you to be, that any electoral representation in India would be doomed to mischief if it failed to recognise the fact that there are in this country two great religions.", quoteBy:"Lord Minto, 1906",
+  upsc:"PYQ (multiple): Muslim League founding, communalism origins, two-nation theory evolution. The divide and rule critique: separate electorates institutionalised communal identity as political identity.",
+  pyq:true, keywords:["muslim league","1906","simla","aga khan","minto","separate electorate","dhaka","jinnah","communal","pakistan","morley"] },
+
+{ era:"era5", year:1907, title:"Surat Split + Anglo-Russian Convention",
+  cat:"nationalist",
+  short:"Congress splits into Moderates and Extremists at Surat. Anglo-Russian Convention ends the 'Great Game' — Afghanistan secured as British sphere.",
+  detail:"The Surat Congress session (1907) saw violent disagreement between Moderates (Gokhale, Pherozeshah Mehta — constitutional methods, prayer/petition) and Extremists (Tilak, Pal, Lajpat Rai — mass agitation, Swadeshi, Swaraj). The Moderates walked out; Congress was paralysed for years. Simultaneously, the Anglo-Russian Convention (August 1907) divided Persia into spheres and declared Afghanistan a British protectorate — ending the Great Game after 70 years of rivalry.",
+  quote:"", quoteBy:"",
+  upsc:"PYQ (multiple): Moderates vs. Extremists comparison — most important PYQ topic in this section. Assess contributions of both. Surat Split as the low point of early nationalism before Gandhi's arrival. The 1907 Convention shows how global geopolitics affected India.",
+  pyq:true, keywords:["surat split","1907","moderates","extremists","gokhale","tilak","congress","russia","convention","afghanistan"] },
+
+{ era:"era5", year:1908, title:"Tilak's Second Sedition Trial — 6 Years in Mandalay",
+  cat:"press",
+  short:"Tilak sentenced to 6 years' transportation to Mandalay for Kesari articles celebrating the Muzaffarpur bombers — writes Gita Rahasya in prison.",
+  detail:"Tilak's Kesari articles celebrated Khudiram Bose and Prafulla Chaki (who bombed a carriage in Muzaffarpur intending to kill the judge who had flogged nationalists). Two British women were accidentally killed. Tilak's articles — while not explicitly endorsing the killings — called the bombers patriots. Tried under Section 124A; defended by Muhammad Ali Jinnah (then a Moderate Congress lawyer). Sentenced to 6 years in Mandalay (Burma). In prison, Tilak wrote Gita Rahasya — an action-oriented interpretation of the Bhagavad Gita that became a nationalist text.",
+  quote:"", quoteBy:"",
+  upsc:"Tilak personality question. Gita Rahasya (1915) as a key intellectual work. Jinnah defending Tilak — an irony given later history. The trial confirms Section 124A as the most powerful anti-press weapon.",
+  pyq:true, keywords:["tilak","1908","mandalay","gita rahasya","sedition","muzaffarpur","khudiram","jinnah","kesari","section 124a"] },
+
+{ era:"era5", year:1909, title:"Morley-Minto Reforms — Separate Electorates Institutionalised",
+  cat:"constitutional",
+  short:"Indian Councils Act 1909: elected members added to legislative councils; Muslims get separate electorates — communal representation becomes constitutional.",
+  detail:"The Indian Councils Act (1909) expanded the legislative councils and introduced elected (not just nominated) Indian members. The crucial provision: separate Muslim electorates — Muslims could only vote for Muslim candidates in reserved seats. This institutionalised the communal identity as the basis of political representation, exactly as demanded at the Simla Deputation (1906). Congress opposed separate electorates; the Muslim League enthusiastically supported them. The Lucknow Pact (1916) saw Congress temporarily accepting separate electorates.",
+  quote:"", quoteBy:"",
+  upsc:"Constitutional evolution sequence. Separate electorates → communalism → Muslim League's growing demands → ultimately partition. The Morley-Minto Reforms are the constitutional turning point toward communal politics.",
+  pyq:true, keywords:["morley minto","1909","separate electorate","councils act","communal","muslim","reform","constitution","imperial council"] },
+
+{ era:"era5", year:1912, title:"Al-Hilal — Maulana Azad's Newspaper",
+  cat:"press",
+  short:"Maulana Abul Kalam Azad launches Al-Hilal — combining Islamic theology with Indian nationalist politics; suppressed in 1914 under the Press Act.",
+  detail:"Al-Hilal (The Crescent, 1912, Calcutta) was Azad's attempt to mobilise Indian Muslims on a nationalist rather than separatist platform — arguing from within Islamic scholarship that Indian nationalism was compatible with, indeed required by, Islamic principle. Its circulation reached 26,000 — unusually high for the time. The British suppressed it in 1914 (under the Indian Press Act, 1910). Azad launched Al-Balagh (1915) as a successor. His argument — that Deoband-style composite nationalism was more authentically Islamic than the Aligarh-Muslim League separatist position — was a key intellectual counter to Jinnah.",
+  quote:"", quoteBy:"",
+  upsc:"PYQ: Maulana Azad as a personality question. Al-Hilal + Ghubar-e-Khatir (letters from prison, 1942–46) + India Wins Freedom (autobiography, 1959) are his key works. His Deoband-nationalism argument as a counter to Two-Nation Theory.",
+  pyq:true, keywords:["al-hilal","azad","1912","press","muslim","nationalist","deoband","balagh","islamic","theology","partition"] },
+
+{ era:"era5", year:1916, title:"Lucknow Pact — Congress-League Unity",
+  cat:"nationalist",
+  short:"Congress and Muslim League present a joint constitutional demand for the first time — a historic compromise; Jinnah as the 'Ambassador of Hindu-Muslim Unity.'",
+  detail:"The Lucknow Pact (December 1916) was negotiated at the Congress and League's simultaneous sessions at Lucknow. Key terms: Congress accepted separate electorates for Muslims (a major concession); League accepted Congress's constitutional demands. Joint demand: representative government, legislative councils with elected majorities, half-power devolution to provinces. This brief unity was Jinnah's finest nationalist moment — Sarojini Naidu called him 'the Ambassador of Hindu-Muslim Unity.' Unity lasted until the Non-Cooperation Movement (1920) and Khilafat controversy.",
+  quote:"", quoteBy:"",
+  upsc:"PYQ context: Lucknow Pact significance and limitations. Shows that Congress-League unity was possible but conditional. Jinnah's evolution from nationalist to separatist is a Type 5 causation question favourite.",
+  pyq:true, keywords:["lucknow pact","1916","jinnah","congress","league","hindu muslim unity","1916","constitutional","separate electorate","sarojini"] },
+
+{ era:"era5", year:1919, title:"Rowlatt Act + Jallianwala Bagh Massacre",
+  cat:"constitutional",
+  short:"Rowlatt Act (March 1919): detention without trial. April 13, Baisakhi: General Dyer orders firing in Jallianwala Bagh, Amritsar — 379 killed (official), 1,000+ (unofficial).",
+  detail:"The Rowlatt Act (1919) allowed the government to imprison any person suspected of revolutionary activity without trial — 'no appeal, no vakil, no daleel.' Gandhi called it 'the Black Act' and launched the first all-India satyagraha. On April 13, 1919 (Baisakhi), General Dyer ordered his troops to fire without warning into a crowd of ~20,000 gathered at Jallianwala Bagh (an enclosed garden) — all exits were blocked. Official death toll: 379; unofficial: 1,000+. 1,650 rounds fired in 10 minutes. The Hunter Commission (1920) found Dyer's action 'inhuman'; the British Army restored him to his rank. Tagore renounced his knighthood in protest.",
+  quote:"The government has reduced us to helplessness. It has taken away every measure of self-defence. I am going to call upon the country to civil disobedience.", quoteBy:"Gandhi, on the Rowlatt Act",
+  upsc:"PYQ (multiple): Jallianwala Bagh significance — the turning point that convinced Gandhi (and the Indian middle class) that British rule could never be reformed from within. Tagore's renunciation of knighthood. Hunter Commission failure. The massacre is a Type 4 evaluation question classic.",
+  pyq:true, keywords:["rowlatt","jallianwala","amritsar","1919","dyer","firing","baisakhi","hunter","tagore","knighthood","black act","civil disobedience"] },
+
+// ═══ ERA 6: Gandhian Mass Movements 1919–1942 ════════════════════════════════
+{ era:"era6", year:1920, title:"Non-Cooperation Movement Launched",
+  cat:"nationalist",
+  short:"Gandhi launches India's first mass non-violent nationalist movement — students leave colleges, lawyers leave courts, officials return titles. 6 million join.",
+  detail:"The NCM (September 1920) was launched on two grounds: Jallianwala Bagh injustice + Khilafat (Ottoman Caliphate being abolished after WWI). Programme: boycott government schools and colleges, courts, legislatures, foreign cloth; hand back British titles and honours. Gandhi surrendered his Kaiser-i-Hind gold medal. Nehru called it his political awakening — he left law practice and enrolled in Congress. The movement was withdrawn after Chauri Chaura (February 4, 1922) — a police station was burnt, killing 22 constables. Gandhi's unilateral withdrawal was controversial.",
+  quote:"Non-cooperation with evil is as much a duty as cooperation with good.", quoteBy:"Gandhi",
+  upsc:"PYQ (multiple): NCM causes, programme, significance, reasons for withdrawal. Compare NCM, CDM, QIM. Chauri Chaura controversy — Gandhi's withdrawal shows his absolute commitment to non-violence vs. the movement's need for momentum.",
+  pyq:true, keywords:["non cooperation","ncm","1920","gandhi","khilafat","chauri chaura","boycott","titles","lawyers","students","1922"] },
+
+{ era:"era6", year:1921, title:"Chamber of Princes (Narendramandal)",
+  cat:"doctrine",
+  short:"British create a controlled forum for 109 princes — a constitutional safety valve keeping them isolated from the nationalist movement.",
+  detail:"The Chamber of Princes (1921) was created as part of the Montagu-Chelmsford Reforms framework. It gave the ~565 princely states a forum to meet and present collective views to the Viceroy. However: it could only discuss matters relating to the princes themselves — not British Indian governance. The Political Department (which supervised princely state relations) remained separate from the Home Department (British India). The Chamber was a mechanism of 'subordinate cooperation' — appearances of representation without substance.",
+  quote:"", quoteBy:"",
+  upsc:"Doctrine of Paramountcy + Chamber of Princes = the post-1857 framework for controlling princely states without annexation. Relevant to: integration of princely states (1947–48); Sardar Patel's strategy (lapsing of paramountcy = lever for accession).",
+  pyq:false, keywords:["chamber of princes","narendramandal","1921","princely states","paramountcy","doctrine","viceroy","political department"] },
+
+{ era:"era6", year:1922, title:"Gandhi's 'Great Trial' — Sedition Conviction",
+  cat:"press",
+  short:"Gandhi pleads guilty to sedition; turns the courtroom into a tribunal on British rule. Sentenced to 6 years (served 2 due to illness).",
+  detail:"After the NCM withdrawal (Chauri Chaura), Gandhi was arrested and tried under Section 124A (Sedition) in March 1922. He pleaded guilty — but used his statement to the court to deliver a devastating indictment of British rule. Judge Broomfield imposed 6 years while calling Gandhi 'a man for whom even those who differ from him politically think of as a great patriot and a great leader' — an extraordinary judicial admission. Gandhi served 2 years, released on medical grounds (appendix operation).",
+  quote:"I am here to invite and cheerfully submit to the highest penalty that can be inflicted upon me for what in law is a deliberate crime and what appears to me to be the highest duty of a citizen.", quoteBy:"Gandhi, Great Trial statement, March 23, 1922",
+  upsc:"Section 124A history (Tilak 1897, 1908 → Gandhi 1922 → used against activists post-independence → Supreme Court stay 2022). The 'Great Trial' statement is one of the most powerful legal documents in Indian history.",
+  pyq:true, keywords:["gandhi","1922","great trial","sedition","124a","chauri chaura","conviction","broomfield","jail","non cooperation"] },
+
+{ era:"era6", year:1927, title:"Simon Commission Appointed",
+  cat:"constitutional",
+  short:"All-white Simon Commission to review GOI Act 1919 — no Indian member. All parties boycott: 'Simon Go Back.' Lathi charge injures Lajpat Rai.",
+  detail:"The Simon Commission (1927) was appointed to review the working of the 1919 Act — seven members, all British, no Indian. The insult was deliberate (the British claimed Indians couldn't objectively evaluate their own governance). All major Indian parties — Congress, Muslim League, Hindu Mahasabha — boycotted it. During the Lahore protests (October 30, 1928), police lathi-charged demonstrators; Lala Lajpat Rai was severely beaten. He died of his injuries on November 17, 1928. His last words: 'Every blow is a nail in the coffin of the British Empire.'",
+  quote:"Every blow you strike on my body is a nail in the coffin of the British Empire in India.", quoteBy:"Lala Lajpat Rai, on the lathi charge",
+  upsc:"PYQ context: Simon Commission significance; Nehru Report (1928) as Indian response. Lajpat Rai's death directly triggered Bhagat Singh's revenge mission (Saunders killing, 1928). Shows the chain: lathi charge → Lajpat Rai death → Bhagat Singh → Lahore Conspiracy Case.",
+  pyq:true, keywords:["simon commission","1927","boycott","lajpat rai","lathi charge","lahore","nehru report","simon go back","congress","1928"] },
+
+{ era:"era6", year:1928, title:"Bardoli Satyagraha — Sardar Patel's Organisational Triumph",
+  cat:"nationalist",
+  short:"Patel organises complete revenue non-payment in Bardoli (Gujarat) against a 30% revenue hike during drought — the model satyagraha that makes Patel 'Sardar.'",
+  detail:"The Bardoli Satyagraha (February–August 1928) was the proof-of-concept for the Civil Disobedience Movement two years later. Vallabhbhai Patel organised 87,000 peasants of Bardoli taluka into complete non-payment of a 30% revenue increase imposed during drought. Key: complete internal discipline, no violence, women fully participating (the women of Bardoli gave Patel the title 'Sardar' — Chief). After 6 months, the government rescinded the revenue increase — a complete victory. The 'Bardoli model' directly informed the 1930 CDM strategy.",
+  quote:"", quoteBy:"",
+  upsc:"PYQ context: Bardoli as the model satyagraha; Patel as an organiser. Why Bardoli succeeded: complete discipline, no violence, women's participation, specific concrete demand. Compare with Champaran (1917) — first Gandhian satyagraha — and Kheda (1918) — second.",
+  pyq:true, keywords:["bardoli","1928","patel","sardar","satyagraha","gujarat","peasant","revenue","women","civil disobedience","cdm"] },
+
+{ era:"era6", year:1929, title:"Lahore Congress — Purna Swaraj Declaration",
+  cat:"nationalist",
+  short:"Jawaharlal Nehru elected Congress president; Purna Swaraj (complete independence) declared on December 31, 1929. The tricolour is unfurled.",
+  detail:"The Lahore Congress (December 1929) was a generational turning point. Jawaharlal Nehru, at 40, became president — a symbol of the new generation's impatience with Dominion Status. On December 31, 1929, the Purna Swaraj resolution was passed: India must have complete independence, not Dominion Status. January 26, 1930 was declared Independence Day — celebrated annually until 1947 (which is why January 26, 1950 was chosen for the Republic Day). The event set the stage for the Civil Disobedience Movement of 1930.",
+  quote:"I am a socialist and a republican and am no believer in kings and princes or in the order which they support.", quoteBy:"Jawaharlal Nehru, Lahore Congress, December 1929",
+  upsc:"PYQ context: Lahore Congress significance. January 26, 1930 Independence Day → January 26, 1950 Republic Day: the constitutional link. Purna Swaraj as the shift from Dominion Status demand (Nehru Report 1928) to full independence.",
+  pyq:true, keywords:["lahore congress","1929","purna swaraj","nehru","independence","january 26","dominion status","republic day","tricolour"] },
+
+{ era:"era6", year:1930, title:"Civil Disobedience Movement — The Dandi March",
+  cat:"nationalist",
+  short:"Gandhi's 240-mile march to Dandi (March 12 – April 6, 1930) to make salt in defiance of the Salt Tax — launches the Civil Disobedience Movement.",
+  detail:"On March 12, 1930, Gandhi set out from Sabarmati Ashram with 78 volunteers on a 24-day, 240-mile walk to Dandi on the Gujarat coast. On April 6, he picked up a handful of salty mud — technically breaking the salt tax law. The symbolism was perfect: salt, needed by every Indian regardless of caste, class, or religion, was being taxed by a government that claimed to govern for Indians' welfare. The CDM that followed: 80,000 arrests, women participating massively (first mass inclusion of women in satyagraha), Dharasana Salt Works raid (Sarojini Naidu led after Gandhi's arrest).",
+  quote:"With this, I am shaking the foundations of the British Empire.", quoteBy:"Gandhi, picking up salt at Dandi, April 6, 1930",
+  upsc:"PYQ (multiple): CDM causes, Dandi March significance, Gandhi-Irwin Pact (1931), women's role. The salt tax was ~8% of average Indian family's income — making it an ideal symbol. Compare NCM, CDM, QIM.",
+  pyq:true, keywords:["civil disobedience","cdm","dandi","salt march","1930","gandhi","salt tax","dharasana","sarojini","women","arrest"] },
+
+{ era:"era6", year:1931, title:"Bhagat Singh Hanged + Gandhi-Irwin Pact",
+  cat:"nationalist",
+  short:"March 23, 1931: Bhagat Singh, Sukhdev, Rajguru hanged at 23, 23, and 22 years old. March 5: Gandhi-Irwin Pact partially suspends CDM.",
+  detail:"Bhagat Singh and his HSRA comrades killed Saunders (December 1928) to avenge Lajpat Rai's death. They threw smoke bombs in the Central Legislative Assembly (April 1929) — 'to make the deaf hear' (no one was injured, they surrendered). Three years of legal proceedings and hunger strikes (67 days). Executed March 23, 1931 at 7:30 PM (advanced by 11 hours to prevent crowds). Gandhi's refusal to demand commutation of their sentence while negotiating the Gandhi-Irwin Pact remains historically controversial. Bhagat Singh died a socialist atheist, not merely a martyr.",
+  quote:"Bombs and pistols do not make revolution. The sword of revolution is sharpened on the whetting stone of ideas.", quoteBy:"Bhagat Singh",
+  upsc:"PYQ (multiple): Bhagat Singh significance — socialist nationalism beyond the martyr narrative. 'Why I Am an Atheist' (1931, written in prison) as a key text. The Gandhi-Bhagat Singh comparison: complementary or contradictory strands of nationalism?",
+  pyq:true, keywords:["bhagat singh","1931","sukhdev","rajguru","hanged","saunders","assembly","bomb","socialist","atheist","gandhi irwin pact"] },
+
+{ era:"era6", year:1932, title:"Communal Award + Poona Pact",
+  cat:"constitutional",
+  short:"British Communal Award gives Dalits separate electorates. Gandhi fasts against it. Ambedkar and Gandhi negotiate the Poona Pact — more seats but no separate electorate.",
+  detail:"The Communal Award (August 1932) granted separate electorates to Depressed Classes (Dalits). Gandhi began a fast-unto-death in Yerwada Prison against it — he said separate electorates would permanently divide Hindu society. Ambedkar was forced to negotiate under pressure of Gandhi's death: the Poona Pact (September 26, 1932) substituted joint electorates with 148 reserved seats in general constituencies (vs. 71 proposed separate seats — numerically more, but no separate electorate). Ambedkar later wrote: 'I made a great mistake.' Gandhi's fast as emotional coercion vs. sincere act remains a central Dalit-nationalist debate.",
+  quote:"Political democracy cannot last unless there lies at the base of it social democracy.", quoteBy:"B.R. Ambedkar, Constituent Assembly, 1949",
+  upsc:"PYQ (multiple): Gandhi vs. Ambedkar comparison. Poona Pact significance. The fundamental tension: Gandhi's priority (Hindu unity) vs. Ambedkar's priority (Dalit political independence). Ambedkar's 'Annihilation of Caste' (1936) as his definitive text.",
+  pyq:true, keywords:["communal award","poona pact","1932","ambedkar","gandhi","dalit","separate electorate","fast","reserved seats","untouchability","annihilation"] },
+
+{ era:"era6", year:1935, title:"Government of India Act 1935",
+  cat:"constitutional",
+  short:"Most comprehensive colonial constitutional document: Provincial Autonomy granted; All-India Federation proposed (never implemented); separate electorates retained.",
+  detail:"The GOI Act 1935 is the longest Act passed by the British Parliament until the 1970s. Key provisions: (1) Provincial Autonomy — elected provincial governments with real powers (Congress ministries formed in 6 of 11 provinces, 1937–39). (2) All-India Federation — provinces + princely states in one federal structure (never brought into force — princes refused; WWII supervened). (3) Federal Court established. (4) Separate electorates continued. The Act was the constitutional framework at independence — the Indian Constitution (1950) is substantially based on the 1935 Act's provincial framework.",
+  quote:"The federation envisaged in the Act is designed to make India safe for the reaction.", quoteBy:"Jawaharlal Nehru",
+  upsc:"PYQ (multiple): GOI Act 1935 provisions; why federation never implemented; Congress acceptance vs. rejection. The Indian Constitution's debt to the 1935 Act is significant — its federal structure, emergency provisions, and judicial review mechanisms all trace back to it.",
+  pyq:true, keywords:["goi act","1935","provincial autonomy","federation","congress","ministry","princely states","nehru","constitution","federal court"] },
+
+{ era:"era6", year:1940, title:"Lahore Resolution — Pakistan Demand",
+  cat:"nationalist",
+  short:"Muslim League's Lahore Resolution (March 23, 1940) demands 'independent states' for Muslims in north-west and north-east India — the formal origin of the Pakistan demand.",
+  detail:"The Lahore Resolution (passed March 23, 1940 — now Pakistan Day) marked the Muslim League's final break with the idea of a united India. The 'two-nation theory' — that Hindus and Muslims are two separate nations who cannot coexist in one democratic state where the Hindu majority would always outvote Muslims — was articulated by Jinnah. The word 'Pakistan' does not appear in the resolution, but 'independent states' in north-west and north-east regions was the demand. Jinnah had become the 'Quaid-e-Azam' (Great Leader) — from the secular Congressman who co-authored the Lucknow Pact (1916).",
+  quote:"Hindus and Mussulmans belong to two different religious philosophies, social customs, literatures. They neither intermarry nor interdine together and, indeed, they belong to two different civilisations.", quoteBy:"Muhammad Ali Jinnah, Lahore, March 23, 1940",
+  upsc:"PYQ (multiple): Origins of Pakistan demand; evolution of Jinnah from nationalist to separatist; Two-Nation Theory critique; Congress-League negotiations breakdown.",
+  pyq:true, keywords:["lahore resolution","pakistan","1940","jinnah","two nation theory","muslim league","quaid","partition","1947","communal"] },
+
+{ era:"era6", year:1942, title:"Quit India Movement — 'Do or Die'",
+  cat:"nationalist",
+  short:"Gandhi launches the Quit India Movement (August 8, 1942) — 'Do or Die.' Entire Congress leadership arrested by August 9; students and youth lead the underground.",
+  detail:"The Cripps Mission (March–April 1942) failed: Congress rejected its Dominion Status offer; League rejected it as inadequate. Gandhi's response: the Quit India Movement, passed by the AICC at Gowalia Tank, Bombay, August 8. Gandhi's call: 'Do or Die — either we free India or we die in the attempt.' By August 9, the entire Congress leadership was arrested. Aruna Asaf Ali unfurled the Congress flag at Gowalia Tank. The QIM became a students' and youth movement: underground radio, sabotage of communication lines, parallel governments in pockets of Satara, Tamluk, Ballia. The British suppressed it brutally: 100,000 arrests, 1,000+ killed.",
+  quote:"Do or Die — either we free India or die in the attempt. There is no middle course.", quoteBy:"Gandhi, August 8, 1942",
+  upsc:"PYQ (multiple): QIM significance; 'QIM was India's most violent mass movement' — evaluate; Aruna Asaf Ali's role; student/youth role when adults were arrested. Compare NCM, CDM, QIM — QIM had the most violence, least Gandhian control.",
+  pyq:true, keywords:["quit india","qim","1942","do or die","aruna","underground","students","arrest","congress","gandhi","gowalia tank","cripps"] },
+
+// ═══ ERA 7: Independence & Partition 1942–1948 ═══════════════════════════════
+{ era:"era7", year:1943, title:"Bengal Famine — 2–3 Million Dead",
+  cat:"economic",
+  short:"Bengal Famine (1943): 2–3 million deaths. Not a food shortage — an entitlement failure. Churchill's War Cabinet denies emergency grain imports.",
+  detail:"The 1943 Bengal Famine is Amartya Sen's primary case study for his entitlement theory — the famine was not caused by food shortage (rice was being exported from Bengal) but by entitlement failures: wartime inflation wiped out the purchasing power of labourers and artisans; the British 'denial policy' (destroying boats and rice stocks to prevent Japanese use) destroyed the distribution system; no famine declaration, no price controls, continued exports. Churchill allegedly refused to divert ships from the war effort: 'the famine is their own fault for breeding like rabbits.' Wavell (Viceroy) wrote to Churchill in frustration at the War Cabinet's indifference.",
+  quote:"No substantial famine has ever occurred in any independent and democratic country with a relatively free press.", quoteBy:"Amartya Sen, Poverty and Famines (1981)",
+  upsc:"PYQ (2022): Famines. Sen's entitlement theory. Bengal 1943 is the most analysed colonial famine — Churchill's role is controversial but documented. The 'democracy prevents famine' argument is the most powerful contemporary relevance closer for famine answers.",
+  pyq:true, keywords:["bengal famine","1943","amartya sen","entitlement","churchill","2 million","deaths","denial policy","wavell","boats","rice"] },
+
+{ era:"era7", year:1945, title:"INA Trials — The Final Radicaliser",
+  cat:"military",
+  short:"British try INA officers at Red Fort (November 1945) for treason — the trial backfires; lawyers Nehru, Bhulabhai Desai, Asaf Ali defend them; all are acquitted under public pressure.",
+  detail:"The Indian National Army (INA) under Bose had fought alongside the Japanese against British India. After Japan's surrender (August 1945), ~20,000 INA soldiers were captured. The British tried the first batch — Generals Shah Nawaz Khan, Prem Sahgal, and Gurdial Dhillon — at the Red Fort, Delhi. The trial was a political catastrophe for Britain: Nehru, Bhulabhai Desai, and Asaf Ali appeared in full Congress regalia to defend. The Indian public — Hindu, Muslim, Sikh, regardless — lionised the INA. The accused were eventually acquitted; all sentences were remitted. The loyalty of the Indian Army could no longer be assumed.",
+  quote:"", quoteBy:"",
+  upsc:"PYQ context: INA trials significance — the moment British India's 'consent' finally evaporated. Clement Attlee later cited the INA trials (and the RIN Mutiny) as more important for India's independence than Gandhi's campaigns — a controversial but significant claim.",
+  pyq:true, keywords:["ina","1945","red fort","bose","trial","nehru","acquittal","indian army","loyalty","japan","shaw nawaz","independence"] },
+
+{ era:"era7", year:1946, title:"Royal Indian Navy Mutiny — The Last Warning",
+  cat:"military",
+  short:"February 1946: 78 warships, 20 shore establishments mutiny — the military foundation of British rule cracks. Britain realises it cannot hold India by force.",
+  detail:"On February 18, 1946, ratings of HMIS Talwar in Bombay mutinied against racial discrimination, poor food, and abusive British officers. Within days, 78 ships and 20 shore establishments joined — spreading to Karachi, Calcutta, Madras. Aruna Asaf Ali (Congress) raised the Congress flag on some ships. Congress eventually urged the mutineers to surrender (to prevent a crackdown); the Muslim League expressed sympathy. The mutiny was suppressed within 5 days, but Viceroy Wavell wrote to London that the mutiny showed the Indian military could no longer be relied upon — the most fundamental pillar of British rule had cracked.",
+  quote:"", quoteBy:"",
+  upsc:"PYQ context: Why did Britain leave India? The RIN Mutiny is the most concrete military answer — Britain could not maintain empire if the Indian Army was unreliable. Clement Attlee cited this as more significant than Gandhi's campaigns.",
+  pyq:true, keywords:["rin mutiny","1946","navy","mutiny","bombay","wavell","independence","military","loyalty","britain","leave india"] },
+
+{ era:"era7", year:1946, title:"Cabinet Mission Plan",
+  cat:"constitutional",
+  short:"Three-tier federal plan: All-India union (defence/foreign affairs only) + provincial groupings + provinces. Congress and League both provisionally accept — then both reject.",
+  detail:"The Cabinet Mission (Cripps, Alexander, Pethick-Lawrence) arrived March 1946. Its plan: a three-tier federation — an all-India union with minimal powers (defence, foreign affairs, communications); three groups of provinces (Hindu-majority, Muslim-majority northwest, Muslim-majority northeast); then individual provinces. This was the last chance to keep India united. Congress accepted the plan provisionally but rejected 'compulsory grouping.' Jinnah accepted then withdrew. The plan's failure made partition almost inevitable.",
+  quote:"", quoteBy:"",
+  upsc:"PYQ (2022+): Was Partition avoidable? The Cabinet Mission failure is the central answer — if Congress had not rejected compulsory grouping, a united India was constitutionally possible. The Congress-League breakdown is a Type 4 evaluation question.",
+  pyq:true, keywords:["cabinet mission","1946","cripps","federal","grouping","partition","congress","league","jinnah","nehru","constitution"] },
+
+{ era:"era7", year:1947, title:"Indian Independence + Partition",
+  cat:"constitutional",
+  short:"August 14/15, 1947: Pakistan (August 14) and India (August 15) become independent. Partition causes ~1–2 million deaths and 15 million displacements — the largest migration in human history.",
+  detail:"The Mountbatten Plan (June 3, 1947) advanced the transfer of power from June 1948 to August 1947. The Indian Independence Act (July 18, 1947) created two Dominions. Paramountcy lapsed — 565 princely states were technically free. The Radcliffe Line (drawn in 5 weeks) divided Punjab and Bengal, creating boundaries that did not match community distributions. The violence: communal massacres in Punjab and Bengal; 1–2 million dead; 15 million displaced in the largest forced migration in history.",
+  quote:"At the stroke of the midnight hour, when the world sleeps, India will awake to life and freedom.", quoteBy:"Jawaharlal Nehru, Tryst with Destiny speech, August 14–15, 1947",
+  upsc:"PYQ (multiple): Causes and nature of partition; was it avoidable?; Two-Nation Theory critique; human cost. Nehru's 'Tryst with Destiny' speech is the most quoted primary source in Indian independence history.",
+  pyq:true, keywords:["independence","partition","1947","nehru","tryst destiny","pakistan","mountbatten","radcliffe","muslim","communal","migration","midnight"] },
+
+{ era:"era7", year:1947, title:"Integration of Princely States — Sardar Patel",
+  cat:"constitutional",
+  short:"Sardar Patel and V.P. Menon cajole and pressure 565 princely states to accede to India. Paramountcy lapsing was the constitutional lever.",
+  detail:"When paramountcy lapsed on August 15, 1947, 565 princely states were technically free. Patel used three tools: (1) Appeal to national sentiment. (2) Threat — without accession, the princely state would be isolated and defenseless. (3) The constitutional argument: paramountcy's lapse meant the princes lost their British guarantees; they were better off inside India. 562 states acceded by August 15. Remaining: Hyderabad (Operation Polo, September 1948 — 'police action'); Junagadh (plebiscite); Kashmir (accession October 26, 1947, followed by Pakistani tribal invasion and war).",
+  quote:"", quoteBy:"",
+  upsc:"PYQ (2021): Integration of Princely States — Patel as the 'Iron Man.' Operation Polo (Hyderabad). Kashmir's special status. The Instrument of Accession as the constitutional document.",
+  pyq:true, keywords:["princely states","integration","patel","1947","paramountcy","hyderabad","operation polo","kashmir","instrument of accession","menon","sardar"] },
+
+{ era:"era7", year:1948, title:"Operation Polo — Hyderabad Integrated",
+  cat:"military",
+  short:"September 13–18, 1948: Indian Army 'police action' against the Nizam of Hyderabad — the last princely state holding out accedes to India.",
+  detail:"Hyderabad (the Nizam's Dominion), the largest and richest princely state, refused to accede. The Nizam claimed independence; the Razakars (Muslim paramilitary) terrorised the Hindu majority population. Patel ordered Operation Polo (September 13, 1948). In 5 days, the Indian Army ended Hyderabad's resistance. The Nizam signed the Instrument of Accession. This was the final act of integration — completing the process Patel had begun with the July 5, 1947 letter to the states.",
+  quote:"", quoteBy:"",
+  upsc:"PYQ (2021): Integration of princely states. Hyderabad as the hardest case. The 'police action' precedent — India used military force for integration, setting a precedent for Kashmir too. Patel's realism vs. Nehru's more cautious approach.",
+  pyq:true, keywords:["hyderabad","operation polo","1948","nizam","razakar","patel","police action","accession","integration","princely"] }
+];
+
+// ── CATEGORIES & ERAS CONFIG ─────────────────────────────────────────────────
+const catLabels = {
+  economic:       "Economic",
+  constitutional: "Constitutional",
+  military:       "Military",
+  nationalist:    "Nationalist",
+  reform:         "Reform",
+  doctrine:       "Doctrine",
+  press:          "Press/Edu"
+};
+
+const eras = [
+  { id:"era1", title:"Company Origins",        range:"1600–1757", desc:"Before Plassey; Anglo-French rivalry; Ring Fence policy" },
+  { id:"era2", title:"Conquest & Ring Fence",  range:"1757–1813", desc:"Plassey to Charter Act; Diwani, Ring Fence, Subsidiary Alliance" },
+  { id:"era3", title:"Company Consolidation", range:"1813–1857", desc:"Charter Acts era; Permanent Settlement; education debates; Doctrine of Lapse" },
+  { id:"era4", title:"Great Revolt & Crown Rule",range:"1857–1885",desc:"1857 to INC founding; GOI Act 1858; Drain theory; Vernacular Press Act" },
+  { id:"era5", title:"Early Nationalism",      range:"1885–1919", desc:"INC to Jallianwala Bagh; Partition of Bengal; Extremists; Morley-Minto" },
+  { id:"era6", title:"Gandhian Mass Movements",range:"1919–1942", desc:"NCM to QIM; CDM; Poona Pact; GOI 1935; Lahore Resolution" },
+  { id:"era7", title:"Independence & Partition",range:"1942–1948",desc:"QIM to Operation Polo; INA; RIN Mutiny; Cabinet Mission; Partition" }
+];
+
+// ── STATE ────────────────────────────────────────────────────────────────────
+let activeFilters = new Set(["economic","constitutional","military","nationalist","reform","doctrine","press"]);
+let searchQuery = "";
+let expandedCard = null;
+
+// ── RENDER ───────────────────────────────────────────────────────────────────
+function render() {
+  const container = document.getElementById("timeline");
+  container.innerHTML = "";
+  let visibleCount = 0;
+
+  eras.forEach(era => {
+    const eraEvents = events.filter(e => e.era === era.id);
+    const visibleEraEvents = eraEvents.filter(e => isVisible(e));
+
+    const section = document.createElement("div");
+    section.className = "era-section";
+    section.id = era.id;
+
+    section.innerHTML = `
+      <div class="era-header">
+        <span class="era-badge">${era.range}</span>
+        <span class="era-title">${era.title}</span>
+        <span class="era-desc">${era.desc}</span>
+        <span class="era-count">${visibleEraEvents.length} event${visibleEraEvents.length!==1?'s':''}</span>
+      </div>
+      <div class="events-wrapper" id="wrap-${era.id}"></div>`;
+
+    container.appendChild(section);
+
+    const wrapper = section.querySelector(`#wrap-${era.id}`);
+    let eraVisible = 0;
+
+    eraEvents.forEach(ev => {
+      const visible = isVisible(ev);
+      if (visible) { visibleCount++; eraVisible++; }
+      const row = createEventRow(ev, visible);
+      wrapper.appendChild(row);
+    });
+
+    if (eraVisible === 0) section.style.display = "none";
+    else section.style.display = "";
+  });
+
+  document.getElementById("count-display").textContent = `${visibleCount} of ${events.length} events`;
+  document.getElementById("empty-state").style.display = visibleCount === 0 ? "block" : "none";
+}
+
+function isVisible(ev) {
+  if (!activeFilters.has(ev.cat)) return false;
+  if (!searchQuery) return true;
+  const q = searchQuery.toLowerCase();
+  return ev.title.toLowerCase().includes(q)
+    || ev.short.toLowerCase().includes(q)
+    || ev.detail.toLowerCase().includes(q)
+    || ev.keywords.some(k => k.includes(q))
+    || String(ev.year).includes(q);
+}
+
+function createEventRow(ev, visible) {
+  const row = document.createElement("div");
+  row.className = "event-row" + (visible ? "" : " hidden");
+  row.dataset.id = ev.year + ev.title.slice(0,10);
+
+  const hasQuote = ev.quote && ev.quote.length > 0;
+  const titleHtml = highlight(ev.title);
+  const shortHtml = highlight(ev.short);
+
+  row.innerHTML = `
+    <div class="year-col">
+      <span class="year-badge">${ev.year}</span>
+    </div>
+    <div class="dot-col">
+      <div class="timeline-dot dot-${ev.cat}"></div>
+    </div>
+    <div class="card" data-category="${ev.cat}" onclick="toggleCard(this)">
+      <div class="card-header">
+        <span class="card-title">${titleHtml}${ev.pyq ? '<span class="pyq-tag">PYQ</span>' : ''}</span>
+        <span class="cat-tag tag-${ev.cat}">${catLabels[ev.cat]}</span>
+      </div>
+      <div class="card-short">${shortHtml}</div>
+      <div class="card-body">
+        <div class="card-detail">${highlight(ev.detail)}</div>
+        ${hasQuote ? `<div class="card-quote">"${ev.quote}"<cite>— ${ev.quoteBy}</cite></div>` : ''}
+        <div class="upsc-box">
+          <span class="upsc-label">▲ UPSC ANGLE</span>
+          <div class="upsc-text">${ev.upsc}</div>
+        </div>
+      </div>
+    </div>`;
+  return row;
+}
+
+function highlight(text) {
+  if (!searchQuery || searchQuery.length < 2) return text;
+  const escaped = searchQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return text.replace(new RegExp(`(${escaped})`, 'gi'), '<mark>$1</mark>');
+}
+
+// ── INTERACTIONS ─────────────────────────────────────────────────────────────
+function toggleCard(card) {
+  if (expandedCard && expandedCard !== card) {
+    expandedCard.classList.remove("expanded");
+  }
+  card.classList.toggle("expanded");
+  expandedCard = card.classList.contains("expanded") ? card : null;
+}
+
+function toggleFilter(cat) {
+  if (activeFilters.has(cat)) {
+    if (activeFilters.size === 1) return; // keep at least one
+    activeFilters.delete(cat);
+    document.querySelector(`.chip-${cat}`).classList.remove("active");
+  } else {
+    activeFilters.add(cat);
+    document.querySelector(`.chip-${cat}`).classList.add("active");
+  }
+  render();
+}
+
+function clearSearch() {
+  document.getElementById("search").value = "";
+  searchQuery = "";
+  document.getElementById("clear-btn").style.display = "none";
+  render();
+}
+
+function jumpToEra(eraId) {
+  const el = document.getElementById(eraId);
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+// ── SEARCH ───────────────────────────────────────────────────────────────────
+document.getElementById("search").addEventListener("input", function() {
+  searchQuery = this.value.trim();
+  document.getElementById("clear-btn").style.display = searchQuery ? "inline-block" : "none";
+  if (expandedCard) { expandedCard.classList.remove("expanded"); expandedCard = null; }
+  render();
+});
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>
